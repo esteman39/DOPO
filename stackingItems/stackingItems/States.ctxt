@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=States
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ States\ here.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\ \r\n\ @version\ 1.0\ (14/02/2026)\r\n
+comment1.params=height\ level\ spaceNow
+comment1.target=States(int,\ int,\ java.util.ArrayList)
+comment2.params=
+comment2.target=int\ getCurrentHeight()
+comment3.params=
+comment3.target=int\ getCurrentLevel()
+comment4.params=
+comment4.target=java.util.ArrayList\ getSpace()
+numComments=5
