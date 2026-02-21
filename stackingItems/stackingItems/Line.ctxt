@@ -1,7 +1,0 @@
-#BlueJ class context
-comment0.target=Line
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Line\ here.\r\n\ \ \ \ \ \ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\ \r\n\ @version\ 1.0\ (14/02/2026)\r\n
-comment1.params=scaleLine\ x\ y\ timesY\ timesX
-comment1.target=Line(double,\ int,\ int,\ int,\ int)
-comment1.text=\r\n\ Clase\ que\ ayuda\ a\ crear\ las\ marcas\ visuales\ que\ indican\ la\ altura.\r\n\ @param\:\ scaleLine\ es\ el\ tama\u00F1o\ a\ la\ que\ se\ van\ a\ encontrar\ las\ marcas.\r\n\ @param\:\ x\ es\ la\ posicion\ en\ el\ eje\ de\ la\ anchura\ del\ centro.\r\n\ @param\:\ y\ es\ la\ posicion\ en\ el\ eje\ de\ la\ altura\ del\ centro.\r\n\ @param\:\ timesY\ es\ la\ cantidad\ de\ marcas\ que\ se\ van\ a\ poner\ en\ el\ eje\ de\ altura.\r\n\ @param\:\ timesX\ es\ un\ entero\ que\ representa\ la\ cantidad\ de\ veces\ que\ se\ hara\ un\ marcaje\ de\ referencia\ en\ la\ altura\ maxima\ sobre\ el\ eje\ de\ la\ anchura.\r\n
-numComments=2

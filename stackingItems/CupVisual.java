@@ -1,3 +1,5 @@
+package stackingItems;
+
 /**
  * Representa la visualizacion de una taza en el canvas.
  * 
@@ -45,7 +47,7 @@ public class CupVisual {
         base.changeSize(thicknessPx, heightPx);
         
         // Posicionar
-        int topY = y - heightPx;
+        int topY = y - heightPx + (int)scale;
         base.changePosition(x, y);
         leftWall.changePosition(x, topY);
         rightWall.changePosition(x + heightPx - thicknessPx, topY);
@@ -120,9 +122,7 @@ public class CupVisual {
                 String cupColor = getColor();
                 lidVisual = new LidVisual(cup.getLid(), cupColor);
             }
-            int heightPx = (int)(cup.getHeight() * scale);
-            int thicknessPx = (int)scale;
-            lidVisual.draw(x, y - heightPx - thicknessPx, scale);
+            lidVisual.draw(x, y, scale);
         } else {
             if (lidVisual != null) {
                 lidVisual.erase();

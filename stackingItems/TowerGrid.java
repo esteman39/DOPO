@@ -1,3 +1,5 @@
+package stackingItems;
+
 /**
  * Representa la cuadricula visual de la torre.
  * Dibuja los ejes y las marcas de medicion.

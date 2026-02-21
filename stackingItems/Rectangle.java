@@ -1,3 +1,5 @@
+package stackingItems;
+
 import java.awt.*;
 
 /**

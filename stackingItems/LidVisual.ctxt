@@ -2,7 +2,7 @@
 comment0.target=LidVisual
 comment0.text=\r\n\ Representa\ la\ visualizacion\ de\ una\ tapa\ en\ el\ canvas.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\ \r\n\ @version\ 1.0\ (14/02/2026)\r\n
 comment1.params=lid\ color
-comment1.target=LidVisual(Lid,\ java.lang.String)
+comment1.target=LidVisual(stackingItems.Lid,\ java.lang.String)
 comment1.text=\r\n\ Constructor\ de\ LidVisual\r\n\ @param\ lid\ la\ tapa\ a\ visualizar\r\n\ @param\ color\ color\ de\ la\ taza\ a\ la\ que\ pertenece\r\n
 comment2.params=x\ y\ scale
 comment2.target=void\ draw(int,\ int,\ double)

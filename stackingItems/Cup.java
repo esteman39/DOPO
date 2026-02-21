@@ -1,3 +1,5 @@
+package stackingItems;
+
 /**
  * Representa una taza cilindrica del simulador.
  * La taza i tiene altura 2i - 1 cm.
