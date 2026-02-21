@@ -1,5 +1,3 @@
-package stackingItems;
-
 /**
 * Write a description of class Line here.
 *      

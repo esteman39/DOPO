@@ -2,7 +2,7 @@
 comment0.target=CupVisual
 comment0.text=\r\n\ Representa\ la\ visualizacion\ de\ una\ taza\ en\ el\ canvas.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\ \r\n\ @version\ 1.0\ (14/02/2026)\r\n
 comment1.params=cup
-comment1.target=CupVisual(stackingItems.Cup)
+comment1.target=CupVisual(Cup)
 comment1.text=\r\n\ Constructor\ de\ CupVisual\r\n\ @param\ cup\ la\ taza\ a\ visualizar\r\n
 comment2.params=x\ y\ scale
 comment2.target=void\ draw(int,\ int,\ double)
@@ -24,5 +24,5 @@ comment8.params=
 comment8.target=java.lang.String\ getColor()
 comment8.text=\r\n\ Obtiene\ el\ color\ de\ la\ taza\r\n
 comment9.params=
-comment9.target=stackingItems.Cup\ getCup()
+comment9.target=Cup\ getCup()
 numComments=10

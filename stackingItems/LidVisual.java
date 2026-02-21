@@ -1,5 +1,3 @@
-package stackingItems;
-
 /**
  * Representa la visualizacion de una tapa en el canvas.
  * 

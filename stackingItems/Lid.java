@@ -1,5 +1,3 @@
-package stackingItems;
-
 /**
  * Representa una tapa para una taza.
  * Cada tapa mide 1 cm de alto.
