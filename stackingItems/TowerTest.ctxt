@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=TowerTest
+comment0.text=\r\n\ Simulador\ de\ torre\ de\ tazas\ apilables.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\r\n\ @version\ 28/02/2026\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ shouldCreateTower()
+comment2.text=\r\n\ Este\ metodo\ de\ prueba\ se\ encarga\ de\ probar\ createTower\ y\ verificar\ que\ esta\ funcionando\ correctamente.\r\n
+comment3.params=
+comment3.target=void\ shouldSwap()
+comment3.text=\r\n\ Este\ metodo\ se\ encarga\ de\ prograr\ swap\ y\ verificar\ que\ esta\ funcionando\ de\ manera\ correcta\r\n
+comment4.params=
+comment4.target=void\ tearDown()
+numComments=5
