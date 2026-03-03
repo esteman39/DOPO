@@ -40,7 +40,9 @@ public class TowerTest{
     public void shouldSwap(){
         tower.pushCup(2);
         tower.pushCup(3);
-        tower.swap(2, 3);
+        String[] cup1 = {"cup", "2"};
+        String[] cup2 = {"cup", "3"};
+        tower.swap(cup1, cup2);
     }
     
     @After
