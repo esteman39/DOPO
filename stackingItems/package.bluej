@@ -2,53 +2,29 @@
 dependency1.from=Rectangle
 dependency1.to=Canvas
 dependency1.type=UsesDependency
-dependency10.from=TowerTest
-dependency10.to=Tower
+dependency10.from=Tower
+dependency10.to=Cup
 dependency10.type=UsesDependency
-<<<<<<< HEAD
-dependency11.from=TowerC2Test
-dependency11.to=Tower
-=======
 dependency11.from=Tower
-dependency11.to=Cup
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
+dependency11.to=Lid
 dependency11.type=UsesDependency
 dependency12.from=Tower
-dependency12.to=Cup
+dependency12.to=States
 dependency12.type=UsesDependency
 dependency13.from=Tower
-<<<<<<< HEAD
-dependency13.to=Lid
+dependency13.to=TowerGrid
 dependency13.type=UsesDependency
 dependency14.from=Tower
-dependency14.to=States
+dependency14.to=CupVisual
 dependency14.type=UsesDependency
 dependency15.from=Tower
-dependency15.to=TowerGrid
+dependency15.to=LidVisual
 dependency15.type=UsesDependency
-dependency16.from=Tower
-dependency16.to=CupVisual
-dependency16.type=UsesDependency
-dependency17.from=Tower
-dependency17.to=LidVisual
-dependency17.type=UsesDependency
-dependency2.from=Rectangle
-dependency2.to=Canvas
-=======
-dependency13.to=States
-dependency13.type=UsesDependency
-dependency14.from=Tower
-dependency14.to=TowerGrid
-dependency14.type=UsesDependency
-dependency15.from=Tower
-dependency15.to=CupVisual
-dependency15.type=UsesDependency
-dependency16.from=Tower
-dependency16.to=LidVisual
+dependency16.from=TowerTest
+dependency16.to=Tower
 dependency16.type=UsesDependency
 dependency2.from=Line
 dependency2.to=Rectangle
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
 dependency2.type=UsesDependency
 dependency3.from=TowerGrid
 dependency3.to=Rectangle
@@ -56,69 +32,37 @@ dependency3.type=UsesDependency
 dependency4.from=TowerGrid
 dependency4.to=Line
 dependency4.type=UsesDependency
-<<<<<<< HEAD
-dependency5.from=LidVisual
-dependency5.to=Lid
-dependency5.type=UsesDependency
-dependency6.from=LidVisual
-dependency6.to=Rectangle
-dependency6.type=UsesDependency
-dependency7.from=CupVisual
-dependency7.to=Cup
-dependency7.type=UsesDependency
-dependency8.from=CupVisual
-=======
 dependency5.from=CupVisual
 dependency5.to=Cup
 dependency5.type=UsesDependency
 dependency6.from=CupVisual
 dependency6.to=Rectangle
 dependency6.type=UsesDependency
-dependency7.from=LidVisual
+dependency7.from=Cup
 dependency7.to=Lid
 dependency7.type=UsesDependency
 dependency8.from=LidVisual
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
-dependency8.to=Rectangle
+dependency8.to=Lid
 dependency8.type=UsesDependency
-dependency9.from=Cup
-dependency9.to=Lid
+dependency9.from=LidVisual
+dependency9.to=Rectangle
 dependency9.type=UsesDependency
-<<<<<<< HEAD
-editor.fx.0.height=727
-editor.fx.0.width=697
-editor.fx.0.x=676
-editor.fx.0.y=0
-objectbench.height=158
-objectbench.width=416
-package.divider.horizontal=0.6399394856278366
-package.divider.vertical=0.7368421052631579
-package.editor.height=442
-package.editor.width=528
-package.editor.x=676
-package.editor.y=0
-package.frame.height=727
-package.frame.width=697
-package.numDependencies=17
-package.numTargets=12
-=======
 editor.fx.0.height=737
 editor.fx.0.width=814
 editor.fx.0.x=360
 editor.fx.0.y=26
-objectbench.height=157
-objectbench.width=984
-package.divider.horizontal=0.600796812749004
-package.divider.vertical=0.7412280701754386
-package.editor.height=467
-package.editor.width=871
+objectbench.height=158
+objectbench.width=586
+package.divider.horizontal=0.6002024291497976
+package.divider.vertical=0.7413793103448276
+package.editor.height=466
+package.editor.width=868
 package.editor.x=263
 package.editor.y=44
 package.frame.height=738
 package.frame.width=1024
 package.numDependencies=16
-package.numTargets=11
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
+package.numTargets=12
 package.showExtends=true
 package.showUses=true
 project.charset=UTF-8
@@ -132,144 +76,82 @@ target1.name=Lid
 target1.showInterface=false
 target1.type=ClassTarget
 target1.width=120
-<<<<<<< HEAD
-target1.x=190
-target1.y=310
-=======
 target1.x=450
 target1.y=190
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
 target10.height=70
 target10.name=LidVisual
 target10.showInterface=false
 target10.type=ClassTarget
 target10.width=120
-<<<<<<< HEAD
-target10.x=550
-target10.y=360
-=======
 target10.x=250
 target10.y=220
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
 target11.height=70
 target11.name=Cup
 target11.showInterface=false
 target11.type=ClassTarget
 target11.width=120
-<<<<<<< HEAD
-target11.x=250
-target11.y=220
+target11.x=270
+target11.y=120
 target12.height=70
 target12.name=TowerTest
 target12.showInterface=false
 target12.type=UnitTestTargetJunit4
 target12.width=120
-target12.x=90
-target12.y=150
+target12.x=734
+target12.y=358
 target2.height=70
 target2.name=TowerC2Test
 target2.showInterface=false
 target2.type=UnitTestTargetJunit4
 target2.width=120
-target2.x=685
-target2.y=231
-target3.height=30
+target2.x=10
+target2.y=80
+target3.height=70
 target3.name=Canvas
 target3.showInterface=false
 target3.type=ClassTarget
-target3.width=100
-target3.x=390
-target3.y=40
-=======
-target11.x=80
-target11.y=180
-target2.height=30
-target2.name=States
-target2.showInterface=false
-target2.type=ClassTarget
-target2.width=80
-target2.x=50
-target2.y=330
-target3.height=70
-target3.name=TowerGrid
-target3.showInterface=false
-target3.type=ClassTarget
 target3.width=120
-target3.x=100
-target3.y=80
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
+target3.x=10
+target3.y=290
 target4.height=70
 target4.name=Rectangle
 target4.showInterface=false
 target4.type=ClassTarget
 target4.width=120
-<<<<<<< HEAD
-target4.x=590
-target4.y=100
-=======
 target4.x=240
 target4.y=40
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
 target5.height=70
 target5.name=Line
 target5.showInterface=false
 target5.type=ClassTarget
 target5.width=120
-<<<<<<< HEAD
-target5.x=450
-target5.y=190
-=======
 target5.x=190
 target5.y=310
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
 target6.height=30
 target6.name=States
 target6.showInterface=false
 target6.type=ClassTarget
-<<<<<<< HEAD
-target6.width=80
-target6.x=50
-target6.y=330
-=======
 target6.width=100
 target6.x=390
 target6.y=40
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
 target7.height=70
 target7.name=TowerGrid
 target7.showInterface=false
 target7.type=ClassTarget
 target7.width=120
-<<<<<<< HEAD
-target7.x=80
-target7.y=30
-=======
 target7.x=590
 target7.y=100
-target8.association=TowerTest
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
 target8.height=70
 target8.name=CupVisual
 target8.showInterface=false
 target8.type=ClassTarget
 target8.width=120
-<<<<<<< HEAD
-target8.x=240
-target8.y=40
-target9.association=TowerTest
-=======
 target8.x=50
 target8.y=210
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
 target9.height=70
 target9.name=Tower
 target9.showInterface=false
 target9.type=ClassTarget
 target9.width=120
-<<<<<<< HEAD
-target9.x=60
-target9.y=180
-=======
 target9.x=550
 target9.y=360
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b

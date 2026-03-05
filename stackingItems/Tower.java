@@ -2,24 +2,48 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.JOptionPane;
-import java.util.Collections;
 
 /**
  * Simulador de torre de tazas apilables (stackingItems).
  *
- * 
+ * ============================================================
+ * CICLO 1 - Requisitos 1 al 9 (base del simulador)
+ * ============================================================
+ *   1. Crear torre dados ancho y alto          → Tower(maxHeight, maxWidth)
+ *   2. Adicionar o eliminar taza               → pushCup, popCup, removeCup
+ *   3. Adicionar o eliminar tapa               → pushLid, popLid, removeLid
+ *   4. Ordenar de mayor a menor                → orderTower
+ *   5. Colocar en orden inverso                → reverseTower
+ *   6. Consultar altura                        → height
+ *   7. Consultar tazas tapadas y apilados      → lidedCups, stackingItems
+ *   8. Hacer visible o invisible               → makeVisible, makeInvisible
+ *   9. Terminar simulador                      → exit
+ *
+ * ============================================================
+ * CICLO 2 - Requisitos 10 al 13 (refactoring + extension)
+ * ============================================================
+ *  10. Crear torre con N tazas automaticas     → Tower(cups), createTower
+ *  11. Intercambiar posicion de dos objetos    → swap
+ *  12. Tapar tazas con tapas disponibles       → cover
+ *  13. Consultar swap que reduzca la altura    → swapToReduce
+ *
+ * Modelo de datos:
+ * - stack y stackLids son listas paralelas del mismo tamanio.
+ * - En cada posicion i, exactamente uno tiene valor no nulo:
+ *     stack.get(i) != null     → posicion i es una taza
+ *     stackLids.get(i) != null → posicion i es una tapa
  *
  * @author Thomas Sebastian Garcia Gomez & Esteban Muñoz Arce
- * @version 2.0 (04/03/2026)
+ * @version 2.0 (28/02/2026)
  */
 public class Tower {
 
+    // =========================================================
+    // ATRIBUTOS
+    // =========================================================
+
     private ArrayList<Cup> stack;
     private ArrayList<Lid> stackLids;
-<<<<<<< HEAD
-=======
-    private ArrayList<Integer> lids;
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
     private int maxCups;
     private int maxHeight;
     private int currentHeight;
@@ -47,29 +71,7 @@ public class Tower {
      * @param maxWidth  ancho maximo de la torre en cm
      */
     public Tower(int maxHeight, int maxWidth) {
-<<<<<<< HEAD
         initializeTower(maxHeight, maxWidth);
-=======
-        // Inicializar modelo
-        this.height = maxHeight;
-        this.maxCups = (maxWidth + 1) / 2;
-        this.stack = new ArrayList<>();
-        this.stackLids = new ArrayList<>();
-        this.lids = new ArrayList<>();
-        this.history = new ArrayList<>();
-        
-        // Estado inicial
-        this.currentHeight = 0;
-        this.currentLevel = 0;
-        this.space = new ArrayList<>();
-        
-        // Inicializar vista
-        this.grid = new TowerGrid(maxHeight, maxWidth);
-        this.cupVisuals = new ArrayList<>();
-        this.lidVisuals = new ArrayList<>();
-        this.isVisible = true;
-        
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
         grid.makeVisible();
     }
 
@@ -78,84 +80,34 @@ public class Tower {
     // ---------------------------------------------------------
 
     /**
-<<<<<<< HEAD
      * Agrega una taza a la cima de la torre.
      * Valida numero positivo, que quepa en ancho y alto, y unicidad.
      * Requisito 2 - Ciclo 1.
      *
      * @param cupNumber numero de la taza (>= 1)
-=======
-     * Este metodo se encarga de crear una cantidad n de copas que se le son dadas
-     * @param: recibe cups que es un entero que representa la cantidad de copas que se deben agregar
-     */
-    public void createTower(int cups){
-        if(cups > maxCups){
-            showError("El numero de tazas que quiere ingresar supera el tamaño maximo");
-            return;
-        }
-        for(int i = cups; i > 0; i--){
-            pushCup(i);
-        }
-    }
-    
-    /**
-     * Añade una taza al stack
-     * @param cupNumber numero de la taza
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
      */
     public void pushCup(int cupNumber) {
         if (cupNumber <= 0) {
             showError("El numero de taza debe ser positivo");
             return;
         }
-<<<<<<< HEAD
-        else if (cupNumber > maxCups) {
+        if (cupNumber > maxCups) {
             showError("La taza " + cupNumber + " supera el ancho maximo");
             return;
         }
-        else if (cupExistsInStack(cupNumber)) {
+        if (cupExistsInStack(cupNumber)) {
             showError("La taza " + cupNumber + " ya esta en la torre");
             return;
-=======
-
-        for(int i = 0; i < stack.size(); i++){
-            if (stack.get(i) != null){
-                if(stack.get(i).getNumber() == cupNumber){
-                    showError("Esta taza ya esta dentro de la torre");
-                    return;
-                }
-            }
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
         }
 
         history.add(new States(currentHeight, currentLevel, new ArrayList<>(space)));
 
         Cup newCup = new Cup(cupNumber);
-<<<<<<< HEAD
         int lidIdx = findLidIndex(cupNumber);
         if (lidIdx != -1) newCup.setLid(stackLids.get(lidIdx));
 
         stack.add(newCup);
         stackLids.add(null);
-=======
-        int index = -1;
-        for(int i = 0; i < stackLids.size(); i++){
-            if(stackLids.get(i) != null){   
-                if(stackLids.get(i).getNumber() == cupNumber){
-                    index = i;
-                    break;
-                }
-            }
-        }
-        if(index != -1){
-            Lid lid = stackLids.get(index);
-            newCup.setLid(lid);
-        }
-        stack.add(newCup);
-        stackLids.add(null);
-        
-        // Actualizar logica de apilamiento
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
         updateStackLogic(newCup.getHeight());
 
         CupVisual visual = new CupVisual(newCup);
@@ -175,7 +127,6 @@ public class Tower {
      * Requisito 2 - Ciclo 1.
      */
     public void popCup() {
-<<<<<<< HEAD
         if (!hasCupsInStack()) {
             showError("No hay tazas para remover");
             return;
@@ -198,58 +149,6 @@ public class Tower {
 
         for (int i = lidsAbove.size() - 1; i >= 0; i--) {
             pushLid(lidsAbove.get(i));
-=======
-        int count = 0;
-        if (stack.isEmpty()){
-            showError("No hay tazas para remover");
-            return;
-        }
-        for(int i = 0; i < stack.size(); i++){
-            if(stack.get(i) == null){
-                count += 1;
-            }
-        }
-        if(count == stack.size()){
-            showError("No hay tazas para remover");
-            return;
-        }
-        
-        // Remover visual
-        int lastIndex = cupVisuals.size() - 1;
-        ArrayList<Lid> lidsCount = new ArrayList<>();
-        int i = stack.size()-1;
-        while(stack.get(i) == null){
-            lidsCount.add(stackLids.get(i));
-            popLid();
-            i--; 
-        }
-        
-        cupVisuals.get(lastIndex).erase();
-        cupVisuals.remove(lastIndex);
-        
-        // Remover taza
-        int taza = stack.get(i).getNumber();
-        stack.remove(i);
-        stackLids.remove(i);
-        
-        // Restaurar estado previo
-        if (!history.isEmpty()) {
-            States prev = history.remove(history.size() - 1);
-            currentHeight = prev.getCurrentHeight();
-            currentLevel = prev.getCurrentLevel();
-            space = new ArrayList<>();
-            space = prev.getSpace();
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
-        }
-        
-        for(int h = lidsCount.size()-1; h >= 0; h--){
-            pushLid(lidsCount.get(h).getNumber());
-            /*
-            if(lidsCount.get(h).getNumber() != taza){
-                pushLid(lidsCount.get(h).getNumber());
-            }
-            */
-            lidsCount.remove(h);
         }
     }
 
@@ -261,60 +160,14 @@ public class Tower {
      * @param cupNumber numero de la taza a remover
      */
     public void removeCup(int cupNumber) {
-<<<<<<< HEAD
         int index = findCupIndex(cupNumber);
-=======
-        // Buscar la taza
-        int index = -1;
-        for (int i = 0; i < stack.size(); i++) {
-            if(stack.get(i) != null){
-                if (stack.get(i).getNumber() == cupNumber) {
-                    index = i;
-                    break;
-                }
-            }
-        }
-        
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
         if (index == -1) {
             showError("No se encontro la taza " + cupNumber);
             return;
         }
-<<<<<<< HEAD
         ArrayList<String[]> above = collectAbove(index);
         popCup();
         restoreAbove(above);
-=======
-        
-        // Guardar tazas encima
-        ArrayList<Integer> aboveCups = new ArrayList<>();
-        ArrayList<Integer> aboveLids = new ArrayList<>();
-        for (int i = stack.size() - 1; i > index; i--){
-            if(stack.get(i) != null){
-                aboveCups.add(stack.get(i).getNumber());
-                aboveLids.add(null);
-                popCup();
-            }
-            else{
-                aboveLids.add(stackLids.get(i).getNumber());
-                aboveCups.add(null);
-                popLid();
-            }
-        }
-        
-        // Remover la taza objetivo
-        popCup();
-        
-        // Re-apilar las tazas que estaban encima
-        for (int i = aboveCups.size() - 1; i >= 0; i--){
-            if(aboveCups.get(i) != null){
-                pushCup(aboveCups.get(i));
-            }
-            else{
-                pushLid(aboveLids.get(i));
-            }
-        }
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
     }
 
     // ---------------------------------------------------------
@@ -329,16 +182,15 @@ public class Tower {
      * @param lidNumber numero de la tapa (>= 1)
      */
     public void pushLid(int lidNumber) {
-<<<<<<< HEAD
         if (lidNumber <= 0) {
             showError("El numero de tapa debe ser positivo");
             return;
         }
-        else if (lidNumber > maxCups) {
+        if (lidNumber > maxCups) {
             showError("La tapa " + lidNumber + " supera el ancho maximo");
             return;
         }
-        else if (lidExistsInStack(lidNumber)) {
+        if (lidExistsInStack(lidNumber)) {
             showError("La tapa " + lidNumber + " ya esta en la torre");
             return;
         }
@@ -346,8 +198,13 @@ public class Tower {
         history.add(new States(currentHeight, currentLevel, new ArrayList<>(space)));
 
         Lid newLid = new Lid(lidNumber);
-        int cupIdx = findCupIndex(lidNumber);
-        if (cupIdx != -1) stack.get(cupIdx).setLid(newLid);
+        // Solo auto-asociar si la taza del mismo numero esta justo
+        // en la cima actual (posicion inmediatamente anterior en el stack).
+        // Si no es adyacente, cover() se encarga de la asociacion.
+        int lastCupIdx = getLastCupIndex();
+        if (lastCupIdx != -1 && stack.get(lastCupIdx).getNumber() == lidNumber) {
+            stack.get(lastCupIdx).setLid(newLid);
+        }
 
         stack.add(null);
         stackLids.add(newLid);
@@ -361,62 +218,6 @@ public class Tower {
         if (currentHeight > maxHeight) {
             showError("La tapa " + lidNumber + " supera la altura maxima");
             popLid();
-=======
-        if(lidNumber > maxCups){
-            showError("La tapa supera el ancho maximo");
-            return;
-        }
-        
-        if (lidNumber <= 0) {
-            showError("La tapa de taza debe ser positivo");
-            return;
-        }
-        
-        for(int i = 0; i < stackLids.size(); i++){
-            if (stackLids.get(i) != null){
-                if(stackLids.get(i).getNumber() == lidNumber){
-                    showError("Esta tapa ya esta dentro de la torre");
-                    return;
-                }
-            }
-        }
-        
-        States state = new States(currentHeight, currentLevel, new ArrayList<>(space));
-        history.add(state);
-        
-        Lid newLid = new Lid(lidNumber);
-        int index = -1;
-        for(int i = 0; i < stack.size(); i++){
-            if(stack.get(i) != null){   
-                if(stack.get(i).getNumber() == lidNumber){
-                    index = i;
-                    break;
-                }
-            }
-        }
-        if(index != -1){
-            Cup cup = stack.get(index);
-            cup.setLid(newLid);
-        }
-        stackLids.add(newLid);
-        stack.add(null);
-        
-        updateStackLogicLid(newLid.getWidth());
-        
-        LidVisual visual = new LidVisual(newLid);
-        lidVisuals.add(visual);
-        
-        if (isVisible) {
-            drawLid(visual, currentLevel);
-        }
-        currentLevel += 1;
-        
-        //Verificacion final
-        if(currentHeight > height){
-            showError("Has superado el limite maximo");
-            popLid();
-            return;
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
         }
     }
 
@@ -425,7 +226,6 @@ public class Tower {
      * Guarda las tazas que hubiera encima y las vuelve a colocar.
      * Requisito 3 - Ciclo 1.
      */
-<<<<<<< HEAD
     public void popLid() {
         if (!hasLidsInStack()) {
             showError("No hay tapas para remover");
@@ -454,62 +254,6 @@ public class Tower {
         for (int i = cupsAbove.size() - 1; i >= 0; i--) {
             pushCup(cupsAbove.get(i));
         }
-=======
-    public void popLid(){
-        int count = 0;
-        if (stackLids.isEmpty()){
-            showError("No hay tapas para remover");
-            return;
-        }
-        for(int i = 0; i < stackLids.size(); i++){
-            if(stackLids.get(i) == null){
-                count += 1;
-            }
-        }
-        if(count == stackLids.size()){
-            showError("No hay tapas para remover");
-            return;
-        }
-        
-        // Remover visual
-        int lastIndex = lidVisuals.size() - 1;
-        ArrayList<Cup> cupCount = new ArrayList<>();
-        int i = stackLids.size()-1;
-        while(stackLids.get(i) == null){
-            cupCount.add(stack.get(i));
-            popCup();
-            i--; 
-        }
-        
-        lidVisuals.get(lastIndex).erase();
-        for(int c = 0; c < stack.size(); c++){
-            if(stack.get(c) != null){
-                if(stack.get(c).getNumber() == stackLids.get(i).getNumber()){
-                    stack.get(c).removeLid();
-                    break;
-                }
-            }
-        }
-        lidVisuals.remove(lastIndex);
-        
-        // Remover tapa
-        stack.remove(i);
-        stackLids.remove(i);
-        
-        // Restaurar estado previo
-        if (!history.isEmpty()) {
-            States prev = history.remove(history.size() - 1);
-            currentHeight = prev.getCurrentHeight();
-            currentLevel = prev.getCurrentLevel();
-            space = new ArrayList<>();
-            space = prev.getSpace();
-        }
-        
-        for(int h = cupCount.size()-1; h >= 0; h--){
-            pushCup(cupCount.get(h).getNumber());
-            cupCount.remove(h);
-        }
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
     }
 
     /**
@@ -520,61 +264,14 @@ public class Tower {
      * @param lidNumber numero de la tapa a remover
      */
     public void removeLid(int lidNumber) {
-<<<<<<< HEAD
         int index = findLidIndex(lidNumber);
-=======
-        // Buscar la tapa
-        System.out.println(stackLids);
-        int index = -1;
-        for (int i = 0; i < stackLids.size(); i++) {
-            if(stackLids.get(i) != null){
-                if (stackLids.get(i).getNumber() == lidNumber) {
-                    index = i;
-                    break;
-                }
-            }
-        }
-        
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
         if (index == -1) {
             showError("No se encontro la tapa " + lidNumber);
             return;
         }
-<<<<<<< HEAD
         ArrayList<String[]> above = collectAbove(index);
         popLid();
         restoreAbove(above);
-=======
-        
-        // Guardar tazas y tapas encima
-        ArrayList<Integer> aboveCups = new ArrayList<>();
-        ArrayList<Integer> aboveLids = new ArrayList<>();
-        for (int i = stackLids.size() - 1; i > index; i--){
-            if(stackLids.get(i) != null){
-                aboveLids.add(stackLids.get(i).getNumber());
-                aboveCups.add(null);
-                popLid();
-            }
-            else{
-                aboveCups.add(stack.get(i).getNumber());
-                aboveLids.add(null);
-                popCup();
-            }
-        }
-        
-        // Remover la tapa objetivo
-        popLid();
-        
-        // Re-apilar las tazas y tapas que estaban encima
-        for (int i = aboveLids.size() - 1; i >= 0; i--){
-            if(aboveLids.get(i) != null){
-                pushLid(aboveLids.get(i));
-            }
-            else{
-                pushCup(aboveCups.get(i));
-            }
-        }
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
     }
 
     // ---------------------------------------------------------
@@ -586,39 +283,12 @@ public class Tower {
      * El menor numero siempre queda en la cima.
      * Requisito 4 - Ciclo 1.
      */
-<<<<<<< HEAD
     public void orderTower() {
         if (!hasCupsInStack()) return;
         int[] nums = getCupNumbers();
         Arrays.sort(nums);
         reverseArray(nums);
         rebuildTowerCupsOnly(nums);
-=======
-    public void orderTower(){
-        if (stack.isEmpty()) {
-            return;
-        }
-        
-        // Guardar numeros de tazas
-        int[] numbers = new int[stack.size()];
-        for (int i = 0; i < stack.size(); i++) {
-            numbers[i] = stack.get(i).getNumber();
-        }
-        
-        // Ordenar de mayor a menor
-        Arrays.sort(numbers);
-        reverseArray(numbers);
-        
-        // Vaciar torre
-        while (!stack.isEmpty()) {
-            popCup();
-        }
-        
-        // Re-llenar ordenada
-        for (int num : numbers) {
-            pushCup(num);
-        }
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
     }
 
     // ---------------------------------------------------------
@@ -642,102 +312,10 @@ public class Tower {
     // ---------------------------------------------------------
 
     /**
-<<<<<<< HEAD
      * Retorna la altura actual de la torre en cm.
      * Requisito 6 - Ciclo 1.
      *
      * @return altura en cm
-=======
-     * Este metodo se encarga de intercambiar 2 objetos que estan en pantalla, cambiandolos de posicion
-     * @param: obj1 es el vector de strings que representa que objeto se debe cambiar
-     * @param: obj2 es el vector de strings que representa que objeto se debe cambiar
-     */
-    
-    public void swap(String[] obj1, String[] obj2){
-        int indexP = -1;
-        int indexS = -1;
-        int numObj1 = Integer.parseInt(obj1[1]);
-        int numObj2 = Integer.parseInt(obj2[1]);
-        ArrayList<Integer> changeCup = new ArrayList<>();
-        ArrayList<Integer> changeLid = new ArrayList<>();
-        for (int i = 0; i < stack.size(); i++) {
-            if(obj1[0].equals("cup")){
-                if(stack.get(i) != null){
-                    if (stack.get(i).getNumber() == numObj1){
-                        indexP = i;
-                        break;
-                    }
-                }
-            }
-            else{
-                if(stackLids.get(i) != null){
-                    if (stackLids.get(i).getNumber() == numObj1){
-                        indexP = i;
-                        break;
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < stack.size(); i++) {
-            if(obj2[0].equals("cup")){
-                if(stack.get(i) != null){
-                    if (stack.get(i).getNumber() == numObj2){
-                        indexS = i;
-                        break;
-                    }
-                }
-            }
-            else{
-                if(stackLids.get(i) != null){
-                    if (stackLids.get(i).getNumber() == numObj2){
-                        indexS = i;
-                        break;
-                    }
-                }
-            }
-        }
-        if (indexP == -1){
-            showError("No se encontro el objeto " + obj1);
-            return;
-        }
-        if (indexS == -1) {
-            showError("No se encontro el objeto " + obj2);
-            return;
-        }
-        
-        //Se crea una lista de tazas ya cambiadas de posicion
-        for(int i = 0; i < stack.size(); i++){
-            if(stack.get(i) != null){
-                int numCup = stack.get(i).getNumber();
-                changeCup.add(numCup);
-                changeLid.add(null);
-            }
-            else{
-                int numLid = stackLids.get(i).getNumber();
-                changeLid.add(numLid);
-                changeCup.add(null);
-            }
-        }
-        Collections.swap(changeCup, indexP, indexS); //Se utiliza para intercambiar posiciones en un ArrayList de manera mucho mas eficiente
-        Collections.swap(changeLid, indexP, indexS); //Se utiliza para intercambiar posiciones en un ArrayList de manera mucho mas eficiente
-        
-        //Se elimina la torre actual y construimos la correguida
-        popAll();
-        for(int i = 0; i < changeCup.size(); i++){
-            if(changeCup.get(i) != null){
-                int cup = changeCup.get(i);
-                pushCup(cup);
-            }
-            else{
-                int lid = changeLid.get(i);
-                pushLid(lid);
-            }
-        }
-    }
-    
-    /**
-     * Retorna la altura actual de la torre
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
      */
     public int height() {
         return currentHeight;
@@ -756,18 +334,8 @@ public class Tower {
      */
     public int[] lidedCups() {
         ArrayList<Integer> lided = new ArrayList<>();
-<<<<<<< HEAD
         for (Cup c : stack) {
             if (c != null && c.hasLid()) lided.add(c.getNumber());
-=======
-        
-        for (Cup cup : stack) {
-            if(cup != null){
-                if (cup.hasLid()) {
-                    lided.add(cup.getNumber());
-                }
-            }
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
         }
         int[] result = new int[lided.size()];
         for (int i = 0; i < lided.size(); i++) result[i] = lided.get(i);
@@ -784,21 +352,11 @@ public class Tower {
      */
     public String[][] stackingItems() {
         ArrayList<String[]> items = new ArrayList<>();
-<<<<<<< HEAD
         for (int i = 0; i < stack.size(); i++) {
             if (stack.get(i) != null) {
                 items.add(new String[]{"cup", String.valueOf(stack.get(i).getNumber())});
             } else if (stackLids.get(i) != null) {
                 items.add(new String[]{"lid", String.valueOf(stackLids.get(i).getNumber())});
-=======
-        
-        for (Cup cup : stack){
-            if(cup != null){
-                items.add(new String[]{"cup", String.valueOf(cup.getNumber())});
-                if (cup.hasLid()) {
-                    items.add(new String[]{"lid", String.valueOf(cup.getNumber())});
-                }
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
             }
         }
         String[][] result = new String[items.size()][2];
@@ -888,16 +446,11 @@ public class Tower {
     }
 
     /**
-<<<<<<< HEAD
      * Agrega n tazas automaticamente a una torre existente, de mayor a menor.
      * Si cups supera el maximo permitido, muestra error y no agrega nada.
      * Requisito 10 - Ciclo 2.
      *
      * @param cups numero de tazas a crear
-=======
-     * Actualiza la logica de apilamiento
-     * @param: cupHeight es un atributo que representa la altura de la copa que se quiere ingresar
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
      */
     public void createTower(int cups) {
         if (cups > maxCups) {
@@ -1009,16 +562,14 @@ public class Tower {
         }
         return null;
     }
+
     // =========================================================
     // METODOS PRIVADOS - compartidos Ciclo 1 y Ciclo 2
     // =========================================================
 
     /**
-     * Inicializa todos los atributos internos de la torre.
-     * 
-     *
-     * @param maxHeight altura máxima permitida para la torre.
-     * @param maxWidth ancho máximo permitido para la torre.
+     * Inicializa todos los atributos. Usado por ambos constructores
+     * para evitar duplicacion de codigo (principio DRY).
      */
     private void initializeTower(int maxHeight, int maxWidth) {
         this.maxHeight  = maxHeight;
@@ -1035,11 +586,7 @@ public class Tower {
         this.isVisible  = true;
     }
 
-    /**
-     * Actualiza la estructura lógica de ocupación al agregar una taza.
-     * 
-     * @param cupHeight altura calculada de la taza a insertar.
-     */
+    /** Actualiza el mapa de ocupacion al agregar una taza. */
     private void updateStackLogic(int cupHeight) {
         int n = currentLevel;
         while (n < space.size()) {
@@ -1052,53 +599,7 @@ public class Tower {
         currentHeight = space.size();
     }
 
-    /**
-<<<<<<< HEAD
-     * Actualiza la estructura lógica de ocupación al agregar una tapa
-     *
-     * @param lidWidth ancho calculado de la tapa a insertar.
-=======
-     * Actualiza la logica de apilamiento
-     * @param: lidWidth es un atributo que representa la anchura de la tapa que se quiere ingresar
-     */
-    private void updateStackLogicLid(int lidWidth){
-        int n = currentLevel;
-        while(n < space.size()){
-            if(space.get(n) <= lidWidth){
-                currentLevel += 1;
-            }
-            else{
-                break;
-            }
-            n += 1;
-        }
-        while((currentLevel + 1) > space.size()){
-            space.add(-1);
-        }
-        for(int i = currentLevel; i < (currentLevel + 1); i++){
-            space.set(i, 0);
-        }
-        currentHeight = space.size();
-    }
-    
-    /**
-     * Este metodo nos ayuda a borrar toda la lista despues de una ejecucion, lo que implica que ya no queda nada en pantalla.
-     */
-    private void popAll(){
-        while(!stack.isEmpty()){
-            if(stack.get(stack.size()-1) != null){
-                popCup();
-            }
-            else{
-                popLid();
-            }
-        }
-    }
-    
-    /**
-     * Calcula la posicion X para una taza
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
-     */
+    /** Actualiza el mapa de ocupacion al agregar una tapa. */
     private void updateStackLogicLid(int lidWidth) {
         int n = currentLevel;
         while (n < space.size()) {
@@ -1112,13 +613,8 @@ public class Tower {
     }
 
     /**
-     * Simula la altura resultante de intercambiar dos elementos
-     * en la secuencia actual SIN modificar el estado real de la torre.
-     *
-     * @param sequence secuencia actual de elementos (cup/lid).
-     * @param i índice del primer elemento.
-     * @param j índice del segundo elemento.
-     * @return altura simulada después del intercambio.
+     * Simula la altura resultante de intercambiar i y j en la secuencia,
+     * SIN modificar el estado real de la torre.
      */
     private int simulateSwapHeight(ArrayList<String[]> sequence, int i, int j) {
         ArrayList<String[]> copy = new ArrayList<>(sequence);
@@ -1156,14 +652,7 @@ public class Tower {
         }
         return simHeight;
     }
-    
-    
-    /**
-     * Busca el índice de una taza en la pila según su número.
-     *
-     * @param number número identificador de la taza.
-     * @return índice donde se encuentra o -1 si no existe.
-     */
+
     private int findCupIndex(int number) {
         for (int i = 0; i < stack.size(); i++) {
             if (stack.get(i) != null && stack.get(i).getNumber() == number) return i;
@@ -1171,12 +660,6 @@ public class Tower {
         return -1;
     }
 
-    /**
-     * Busca el índice de una tapa en la pila según su número.
-     *
-     * @param number número identificador de la tapa.
-     * @return índice donde se encuentra o -1 si no existe.
-     */
     private int findLidIndex(int number) {
         for (int i = 0; i < stackLids.size(); i++) {
             if (stackLids.get(i) != null && stackLids.get(i).getNumber() == number) return i;
@@ -1184,82 +667,34 @@ public class Tower {
         return -1;
     }
 
-    /**
-     * Obtiene el índice correspondiente a un objeto representado
-     * como {"cup"/"lid", número}.
-     *
-     * @param obj representación del objeto.
-     * @return índice dentro de la pila.
-     */
     private int findIndexOf(String[] obj) {
         int num = Integer.parseInt(obj[1]);
         return obj[0].equals("cup") ? findCupIndex(num) : findLidIndex(num);
     }
 
-    /**
-     * Verifica si una taza existe actualmente en la pila.
-     *
-     * @param number número de la taza.
-     * @return true si existe, false en caso contrario.
-     */
     private boolean cupExistsInStack(int number) { return findCupIndex(number) != -1; }
-    
-    /**
-     * Verifica si una tapa existe actualmente en la pila.
-     *
-     * @param number número de la tapa.
-     * @return true si existe, false en caso contrario.
-     */
     private boolean lidExistsInStack(int number) { return findLidIndex(number) != -1; }
-    
-    /**
-     * Determina si hay al menos una taza en la pila.
-     *
-     * @return true si existe alguna taza.
-     */
+
     private boolean hasCupsInStack() {
         for (Cup c : stack) if (c != null) return true;
         return false;
     }
 
-    /**
-     * Determina si hay al menos una tapa en la pila.
-     *
-     * @return true si existe alguna tapa.
-     */
     private boolean hasLidsInStack() {
         for (Lid l : stackLids) if (l != null) return true;
         return false;
     }
 
-    
-    /**
-     * Obtiene el índice de la última taza agregada.
-     *
-     * @return índice de la última taza o -1 si no hay.
-     */
     private int getLastCupIndex() {
         for (int i = stack.size() - 1; i >= 0; i--) if (stack.get(i) != null) return i;
         return -1;
     }
 
-    /**
-     * Obtiene el índice de la última tapa agregada.
-     *
-     * @return índice de la última tapa o -1 si no hay.
-     */
     private int getLastLidIndex() {
         for (int i = stackLids.size() - 1; i >= 0; i--) if (stackLids.get(i) != null) return i;
         return -1;
     }
 
-    
-    /**
-     * Construye una secuencia lineal representando la pila actual
-     * como pares {"cup"/"lid", número}.
-     *
-     * @return lista con la secuencia actual.
-     */
     private ArrayList<String[]> buildSequence() {
         ArrayList<String[]> seq = new ArrayList<>();
         for (int i = 0; i < stack.size(); i++) {
@@ -1271,12 +706,6 @@ public class Tower {
         return seq;
     }
 
-    
-    /**
-     * Obtiene los números de todas las tazas actuales en orden.
-     *
-     * @return arreglo con los números de las tazas.
-     */
     private int[] getCupNumbers() {
         ArrayList<Integer> nums = new ArrayList<>();
         for (Cup c : stack) if (c != null) nums.add(c.getNumber());
@@ -1285,26 +714,11 @@ public class Tower {
         return arr;
     }
 
-    
-    /**
-     * Reconstruye la torre utilizando únicamente tazas
-     * en el orden especificado.
-     *
-     * @param numbers arreglo con los números de las tazas.
-     */
     private void rebuildTowerCupsOnly(int[] numbers) {
         popAll();
         for (int num : numbers) pushCup(num);
     }
 
-    
-    /**
-     * Recolecta y elimina todos los elementos que están
-     * por encima de un índice dado.
-     *
-     * @param index índice base.
-     * @return lista con los elementos removidos.
-     */
     private ArrayList<String[]> collectAbove(int index) {
         ArrayList<String[]> above = new ArrayList<>();
         for (int i = stack.size() - 1; i > index; i--) {
@@ -1319,13 +733,6 @@ public class Tower {
         return above;
     }
 
-    
-    /**
-     * Restaura elementos previamente removidos respetando
-     * su orden original.
-     *
-     * @param above lista de elementos a restaurar.
-     */
     private void restoreAbove(ArrayList<String[]> above) {
         for (int i = above.size() - 1; i >= 0; i--) {
             if (above.get(i)[0].equals("cup")) pushCup(Integer.parseInt(above.get(i)[1]));
@@ -1333,10 +740,6 @@ public class Tower {
         }
     }
 
-    
-    /**
-     * Elimina todos los elementos de la torre.
-     */
     private void popAll() {
         while (!stack.isEmpty()) {
             if (stack.get(stack.size() - 1) != null) popCup();
@@ -1344,9 +747,6 @@ public class Tower {
         }
     }
 
-    /**
-     * Restaura el último estado almacenado en el historial.
-     */
     private void restoreLastState() {
         if (!history.isEmpty()) {
             States prev = history.remove(history.size() - 1);
@@ -1356,83 +756,41 @@ public class Tower {
         }
     }
 
-    
-    /**
-     * Elimina el último elemento lógico de la pila.
-     */
     private void removeLastFromStack() {
         int last = stack.size() - 1;
         stack.remove(last);
         stackLids.remove(last);
     }
 
-    
-    /**
-     * Elimina la última representación visual de una taza.
-     */
     private void removeCupVisualLast() {
         int last = cupVisuals.size() - 1;
         cupVisuals.get(last).erase();
         cupVisuals.remove(last);
     }
 
-    
-    /**
-     * Elimina la última representación visual de una tapa.
-     */
     private void removeLidVisualLast() {
         int last = lidVisuals.size() - 1;
         lidVisuals.get(last).erase();
         lidVisuals.remove(last);
     }
 
-    
-    /**
-     * Dibuja una taza en el nivel especificado.
-     *
-     * @param visual representación visual de la taza.
-     * @param level nivel vertical donde se dibuja.
-     */
     private void drawCup(CupVisual visual, int level) {
         int xPos = calculateXPosition(visual.getCup().getNumber());
         int yPos = grid.getYOrigin() - (int) grid.getScale();
         visual.draw(xPos, yPos - (int)(level * grid.getScale()), grid.getScale());
     }
 
-    
-    private void drawLid(LidVisual visual, int level){
-        int xPos = calculateXPosition(visual.getLid().getNumber());
-        int yPos = grid.getYOrigin() - (int)grid.getScale();
-        visual.draw(xPos, yPos - (int)(level * grid.getScale()), grid.getScale());
-    }
-    
-    /**
-     * Dibuja una tapa en el nivel especificado.
-     *
-     * @param visual representación visual de la tapa.
-     * @param level nivel vertical donde se dibuja.
-     */
     private void drawLid(LidVisual visual, int level) {
         int xPos = calculateXPosition(visual.getLid().getNumber());
         int yPos = grid.getYOrigin() - (int) grid.getScale();
         visual.draw(xPos, yPos - (int)(level * grid.getScale()), grid.getScale());
     }
 
-    
-    /**
-     * Calcula la posición horizontal en función del número del objeto.
-     *
-     * @param number número identificador.
-     * @return coordenada X calculada.
-     */
     private int calculateXPosition(int number) {
         int xOffset = (maxCups - number) * (int) grid.getScale();
         return grid.getXOrigin() + xOffset;
     }
 
-   /**
-     * Redibuja completamente la torre respetando el orden actual.
-     */
     private void redrawAll() {
         int cupIdx = 0, lidIdx = 0, level = 0;
         for (int i = 0; i < stack.size(); i++) {
@@ -1442,11 +800,6 @@ public class Tower {
         }
     }
 
-    /**
-     * Muestra un mensaje de error si la interfaz está visible.
-     *
-     * @param message mensaje a mostrar.
-     */
     private void showError(String message) {
         if (isVisible) {
             JOptionPane.showMessageDialog(null, message,
@@ -1454,12 +807,6 @@ public class Tower {
         }
     }
 
-    
-    /**
-     * Invierte el orden de un arreglo de enteros.
-     *
-     * @param arr arreglo a invertir.
-     */
     private void reverseArray(int[] arr) {
         for (int i = 0; i < arr.length / 2; i++) {
             int temp = arr[i];

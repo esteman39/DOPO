@@ -165,9 +165,9 @@ public class TowerTest {
         assertEquals("2",   items[1][1]);
     }
 
-    /** Deberia: pushLid asocia la tapa a la taza del mismo numero */
+    /** Deberia: pushLid asocia la tapa a la taza cuando es la cima */
     @Test
-    public void accordingGMShouldAssociateLidToCupAfterPush() {
+    public void accordingGMShouldAssociateLidToCupAfterCover() {
         tower.pushCup(2);
         tower.pushLid(2);
         int[] lided = tower.lidedCups();
@@ -321,7 +321,6 @@ public class TowerTest {
         tower.pushCup(4);
         tower.pushCup(2);
         tower.pushCup(3);
-<<<<<<< HEAD
         tower.pushCup(1);
         assertEquals(9, tower.height());
     }
@@ -401,8 +400,7 @@ public class TowerTest {
     // REQUISITO 8 - Hacer visible o invisible
     // =========================================================
 
-    /** Deberia: funcionar correctamente en modo invisible 
-    */
+    /** Deberia: funcionar correctamente en modo invisible */
     @Test
     public void accordingGMShouldWorkInInvisibleMode() {
         tower.pushCup(2);
@@ -412,8 +410,7 @@ public class TowerTest {
         assertEquals(4, tower.height());
     }
 
-    /** Deberia: makeVisible y makeInvisible no rompen el estado 
-    */
+    /** Deberia: makeVisible y makeInvisible no rompen el estado */
     @Test
     public void accordingGMShouldToggleVisibilityWithoutLosingState() {
         tower.pushCup(2);
@@ -421,10 +418,5 @@ public class TowerTest {
         tower.makeInvisible();
         assertEquals(1, tower.stackingItems().length);
         assertEquals("2", tower.stackingItems()[0][1]);
-=======
-        String[] cup1 = {"cup", "2"};
-        String[] cup2 = {"cup", "3"};
-        tower.swap(cup1, cup2);
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
     }
 }

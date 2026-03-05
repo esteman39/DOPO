@@ -1,22 +1,14 @@
 #BlueJ class context
 comment0.target=LidVisual
-<<<<<<< HEAD
 comment0.text=\r\n\ Representa\ la\ visualizacion\ de\ una\ tapa\ en\ el\ canvas.\r\n\ La\ tapa\ se\ dibuja\ como\ un\ rectangulo\ del\ mismo\ color\ que\ su\ taza.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\r\n\ @version\ 2.0\ (28/02/2026)\r\n
 comment1.params=lid
 comment1.target=LidVisual(Lid)
 comment1.text=\r\n\ Crea\ la\ representacion\ visual\ de\ una\ tapa.\r\n\ El\ color\ se\ asigna\ segun\ el\ numero\ de\ la\ tapa,\ igual\ que\ su\ taza.\r\n\ \r\n\ @param\ lid\ la\ tapa\ del\ modelo\ a\ visualizar\r\n
-=======
-comment0.text=\r\n\ Representa\ la\ visualizacion\ de\ una\ tapa\ en\ el\ canvas.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\ \r\n\ @version\ 1.0\ (14/02/2026)\r\n
-comment1.params=lid
-comment1.target=LidVisual(Lid)
-comment1.text=\r\n\ Constructor\ de\ LidVisual\r\n\ @param\ lid\ la\ tapa\ a\ visualizar\r\n\ @param\ color\ color\ de\ la\ taza\ a\ la\ que\ pertenece\r\n
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
 comment2.params=x\ y\ scale
 comment2.target=void\ draw(int,\ int,\ double)
 comment2.text=\r\n\ Dibuja\ la\ tapa\ en\ la\ posicion\ especificada\ del\ canvas.\r\n\ \r\n\ @param\ x\ \ \ \ \ posicion\ X\ en\ pixeles\ (esquina\ superior\ izquierda)\r\n\ @param\ y\ \ \ \ \ posicion\ Y\ en\ pixeles\ (esquina\ superior\ izquierda)\r\n\ @param\ scale\ escala\ de\ pixeles\ por\ centimetro\r\n
 comment3.params=
 comment3.target=Lid\ getLid()
-<<<<<<< HEAD
 comment3.text=\r\n\ Retorna\ la\ tapa\ del\ modelo\ asociada\ a\ este\ visual.\r\n\ \r\n\ @return\ la\ tapa\ Lid\r\n
 comment4.params=
 comment4.target=void\ erase()
@@ -29,17 +21,5 @@ comment6.target=void\ makeInvisible()
 comment6.text=\r\n\ Hace\ invisible\ la\ tapa\ si\ estaba\ visible.\r\n
 comment7.params=
 comment7.target=void\ assignColor()
-comment7.text=\r\n\ Asigna\ el\ color\ al\ rectangulo\ segun\ el\ numero\ de\ la\ tapa.\r\n\ El\ color\ coincide\ con\ el\ de\ la\ taza\ del\ mismo\ numero.\r\n
-=======
-comment4.params=
-comment4.target=void\ erase()
-comment4.text=\r\n\ Oculta\ la\ tapa\r\n
-comment5.params=
-comment5.target=void\ makeVisible()
-comment6.params=
-comment6.target=void\ makeInvisible()
-comment7.params=
-comment7.target=void\ assignColor()
-comment7.text=\r\n\ Asigna\ un\ color\ a\ la\ taza\ segun\ su\ numero\r\n
->>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
+comment7.text=\r\n\ Asigna\ el\ color\ al\ rectangulo\ segun\ el\ numero\ de\ la\ tapa.\r\n\ El\ color\ coincide\ con\ el\ de\ la\ taza\ del\ mismo\ numero.\r\n\r\n\ \ \ \ \ \ \ \ /**\r\n\ Asigna\ un\ color\ a\ la\ taza\ segun\ su\ numero\r\n\r\n
 numComments=8
