@@ -25,6 +25,10 @@ public class LidVisual {
     public LidVisual(Lid lid) {
         this.lid = lid;
         this.rectangle = new Rectangle();
+<<<<<<< HEAD
+=======
+        assignColor();
+>>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
         this.isVisible = false;
         assignColor();
     }
@@ -44,6 +48,10 @@ public class LidVisual {
         rectangle.changePosition(x, y);
         rectangle.makeVisible();
         isVisible = true;
+    }
+    
+    public Lid getLid(){
+        return lid;
     }
     
     /**
@@ -85,13 +93,22 @@ public class LidVisual {
         }
     }
     
+<<<<<<< HEAD
     /**
      * Asigna el color al rectangulo segun el numero de la tapa.
      * El color coincide con el de la taza del mismo numero.
+=======
+        /**
+     * Asigna un color a la taza segun su numero
+>>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
      */
     private void assignColor() {
         String[] colors = {"red", "blue", "yellow", "magenta", "green"};
         String color = colors[(lid.getNumber() - 1) % colors.length];
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
         rectangle.changeColor(color);
     }
 }

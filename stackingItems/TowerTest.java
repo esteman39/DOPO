@@ -321,6 +321,7 @@ public class TowerTest {
         tower.pushCup(4);
         tower.pushCup(2);
         tower.pushCup(3);
+<<<<<<< HEAD
         tower.pushCup(1);
         assertEquals(9, tower.height());
     }
@@ -420,5 +421,10 @@ public class TowerTest {
         tower.makeInvisible();
         assertEquals(1, tower.stackingItems().length);
         assertEquals("2", tower.stackingItems()[0][1]);
+=======
+        String[] cup1 = {"cup", "2"};
+        String[] cup2 = {"cup", "3"};
+        tower.swap(cup1, cup2);
+>>>>>>> 486419819cda08f41fbd9697b993520c2041e99b
     }
 }
