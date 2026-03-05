@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=TowerGrid
-comment0.text=\r\n\ Representa\ la\ cuadricula\ visual\ de\ la\ torre.\r\n\ Dibuja\ los\ ejes\ y\ las\ marcas\ de\ medicion.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\ \r\n\ @version\ 1.0\ (14/02/2026)\r\n
+comment0.text=\r\n\ Representa\ la\ cuadricula\ visual\ de\ la\ torre.\r\n\ Dibuja\ los\ ejes\ y\ las\ marcas\ de\ medicion.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\ \r\n\ @version\ 2.0\ (14/02/2026)\r\n
 comment1.params=maxHeight\ maxWidth
 comment1.target=TowerGrid(int,\ int)
 comment1.text=\r\n\ Constructor\ de\ TowerGrid\r\n\ @param\ maxHeight\ altura\ maxima\ en\ cm\r\n\ @param\ maxWidth\ ancho\ maximo\ en\ cm\r\n

@@ -9,7 +9,7 @@ public class CupVisual {
     private Rectangle leftWall;
     private Rectangle rightWall;
     private Rectangle base;
-    private LidVisual lidVisual;
+    //private LidVisual lidVisual;
     private boolean isVisible;
     
     /**
@@ -21,7 +21,7 @@ public class CupVisual {
         this.leftWall = new Rectangle();
         this.rightWall = new Rectangle();
         this.base = new Rectangle();
-        this.lidVisual = null;
+        //this.lidVisual = null;
         this.isVisible = false;
         
         // Asignar color
@@ -57,13 +57,14 @@ public class CupVisual {
         isVisible = true;
         
         // Dibujar tapa si existe
+        /*
         if (cup.hasLid()) {
             if (lidVisual == null) {
-                String cupColor = getColor();
-                lidVisual = new LidVisual(cup.getLid(), cupColor);
+                lidVisual = new LidVisual(cup.getLid());
             }
             lidVisual.draw(x, topY - thicknessPx, scale);
         }
+        */
     }
     
     /**
@@ -74,11 +75,6 @@ public class CupVisual {
             base.makeInvisible();
             leftWall.makeInvisible();
             rightWall.makeInvisible();
-            
-            if (lidVisual != null) {
-                lidVisual.erase();
-            }
-            
             isVisible = false;
         }
     }
@@ -88,11 +84,6 @@ public class CupVisual {
             base.makeVisible();
             leftWall.makeVisible();
             rightWall.makeVisible();
-            
-            if (lidVisual != null) {
-                lidVisual.makeVisible();
-            }
-            
             isVisible = true;
         }
     }
@@ -102,11 +93,6 @@ public class CupVisual {
             base.makeInvisible();
             leftWall.makeInvisible();
             rightWall.makeInvisible();
-            
-            if (lidVisual != null) {
-                lidVisual.makeInvisible();
-            }
-            
             isVisible = false;
         }
     }
@@ -114,6 +100,7 @@ public class CupVisual {
     /**
      * Actualiza la visualizacion de la tapa
      */
+    /*
     public void updateLid(int x, int y, double scale) {
         if (cup.hasLid()) {
             if (lidVisual == null) {
@@ -128,6 +115,7 @@ public class CupVisual {
             }
         }
     }
+    */
     
     /**
      * Asigna un color a la taza segun su numero

@@ -2,7 +2,7 @@
 * Write a description of class Line here.
 *      
 * @author Thomas Sebastian Garcia Gomez & Esteban Muñoz Arce 
-* @version 1.0 (14/02/2026)
+* @version 2.0 (14/02/2026)
 */
 public class Line{
     private int xPosition;

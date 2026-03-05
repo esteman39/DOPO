@@ -165,7 +165,8 @@ public class Rectangle{
         yPosition = newY;
         draw();
     }
-    /*
+    
+    /**
      * Draw the rectangle with current specifications on screen.
      */
 
@@ -179,7 +180,7 @@ public class Rectangle{
         }
     }
 
-    /*
+    /**
      * Erase the rectangle on screen.
      */
     private void erase(){

@@ -3,7 +3,7 @@
  * Dibuja los ejes y las marcas de medicion.
  * 
  * @author Thomas Sebastian Garcia Gomez & Esteban Muñoz Arce 
- * @version 1.0 (14/02/2026)
+ * @version 2.0 (14/02/2026)
  */
 public class TowerGrid {
     private Rectangle leftAxis;

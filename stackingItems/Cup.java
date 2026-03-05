@@ -50,8 +50,8 @@ public class Cup {
     /**
      * Coloca una tapa en la taza
      */
-    public void setLid(Lid lid) {
-        this.lid = lid;
+    public void setLid(Lid newLid) {
+        this.lid = newLid;
     }
     
     /**
