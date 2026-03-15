@@ -12,6 +12,7 @@ public class LidVisual {
     
     /** Rectangulo que representa visualmente la tapa. */
     private Rectangle rectangle;
+    private Rectangle diference;
     
     /** Indica si la tapa esta actualmente visible en el canvas. */
     private boolean isVisible;
@@ -25,7 +26,7 @@ public class LidVisual {
     public LidVisual(Lid lid) {
         this.lid = lid;
         this.rectangle = new Rectangle();
-
+        this.diference = new Rectangle();
 
         assignColor();
 
@@ -45,8 +46,12 @@ public class LidVisual {
         int heightPx = (int) scale; // la tapa mide 1 cm de alto
         
         rectangle.changeSize(heightPx, widthPx);
+        diference.changeSize(10, widthPx);
         rectangle.changePosition(x, y);
+        diference.changePosition(x, y);
+        diference.changeColor("white");
         rectangle.makeVisible();
+        diference.makeVisible();
         isVisible = true;
     }
     
@@ -66,6 +71,7 @@ public class LidVisual {
     public void erase() {
         if (isVisible) {
             rectangle.makeInvisible();
+            diference.makeInvisible();
             isVisible = false;
         }
     }
@@ -76,6 +82,7 @@ public class LidVisual {
     public void makeVisible() {
         if (!isVisible) {
             rectangle.makeVisible();
+            diference.makeVisible();
             isVisible = true;
         }
     }
@@ -86,6 +93,7 @@ public class LidVisual {
     public void makeInvisible() {
         if (isVisible) {
             rectangle.makeInvisible();
+            diference.makeInvisible();
             isVisible = false;
         }
     }

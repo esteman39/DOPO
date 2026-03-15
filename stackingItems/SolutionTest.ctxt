@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=SolutionTest
+comment0.text=\r\n\ The\ test\ class\ SolutionTest.\r\n\r\n\ @author\ \ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\r\n\ @version\ 1.0\ (14/02/2026)\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ tearDown()
+comment3.params=
+comment3.target=void\ shouldGiveSolution()
+comment3.text=\r\n\ Deberia\:\ Mostrar\ la\ salida\ esperada\ que\ se\ nos\ esta\ brindado\ en\ el\ caso\ de\ prueba\ del\ enunciado\ del\ ejercicio.\r\n
+numComments=4

@@ -198,6 +198,7 @@ public class TowerC2Test {
 
     /** Deberia: cover asocia tapa a taza cuando son adyacentes con mismo numero */
     @Test
+    //Error, hay que mirarlo
     public void accordingGMShouldCoverCupWithAdjacentLid() {
         tower.pushCup(2);
         tower.pushLid(2);
@@ -209,6 +210,7 @@ public class TowerC2Test {
 
     /** Deberia: cover con multiple pares adyacentes los tapa todos */
     @Test
+    //Error, hay que mirarlo
     public void accordingGMShouldCoverMultiplePairs() {
         tower.pushCup(3);
         tower.pushLid(3);
@@ -241,6 +243,7 @@ public class TowerC2Test {
 
      /** NO deberia: cover no asocia tapa cuando no es adyacente a su taza */
     @Test
+    //Error, hay que mirarlo
     public void accordingGMShouldNotCoverWhenLidIsNotAdjacent() {
         tower.pushCup(2);
         tower.pushCup(1);
@@ -258,6 +261,7 @@ public class TowerC2Test {
 
     /** NO deberia: cover no tapa dos veces una taza ya tapada */
     @Test
+    //Error, hay que mirarlo
     public void accordingGMShouldNotCoverAlreadyCoveredCup() {
         tower.pushCup(2);
         tower.pushLid(2);
