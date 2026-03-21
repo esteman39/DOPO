@@ -167,6 +167,7 @@ public class TowerTest {
 
     /** Deberia: pushLid asocia la tapa a la taza cuando es la cima */
     @Test
+    //Error, hay que mirarlo
     public void accordingGMShouldAssociateLidToCupAfterCover() {
         tower.pushCup(2);
         tower.pushLid(2);
@@ -350,6 +351,7 @@ public class TowerTest {
 
     /** Deberia: lidedCups retorna tazas con tapa asignada */
     @Test
+    //Error, hay que mirar
     public void accordingGMShouldReturnLidedCups() {
         tower.pushCup(3);
         tower.pushLid(3);
@@ -368,6 +370,7 @@ public class TowerTest {
 
     /** Deberia: lidedCups retorna numeros ordenados de menor a mayor */
     @Test
+    //Error, hay que mirarlo
     public void accordingGMShouldReturnLidedCupsSorted() {
         tower.pushCup(3);
         tower.pushLid(3);
@@ -419,4 +422,5 @@ public class TowerTest {
         assertEquals(1, tower.stackingItems().length);
         assertEquals("2", tower.stackingItems()[0][1]);
     }
+    
 }

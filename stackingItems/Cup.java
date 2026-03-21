@@ -5,39 +5,25 @@
  * @author Thomas Sebastian Garcia Gomez & Esteban Muñoz Arce 
  * @version 1.0 (14/02/2026)
  */
-public class Cup {
-    private int number;
+public class Cup extends Item{
     private Lid lid;
+    private boolean isLid;
     
     /**
      * Constructor de Cup
      * @param number numero de la taza
      */
-    public Cup(int number) {
-        this.number = number;
+    public Cup(int number){
+        super(number, "Cup");
         this.lid = null;
-    }
-    
-    /**
-     * Retorna el numero de la taza
-     */
-    public int getNumber() {
-        return number;
-    }
-    
-    /**
-     * Calcula la altura de la taza en cm
-     * Formula: altura = 2n - 1
-     */
-    public int getHeight() {
-        return (2 * number) - 1;
+        this.isLid = false;
     }
     
     /**
      * Verifica si la taza tiene tapa
      */
     public boolean hasLid() {
-        return lid != null;
+        return isLid;
     }
     
     /**
@@ -52,6 +38,7 @@ public class Cup {
      */
     public void setLid(Lid newLid) {
         this.lid = newLid;
+        this.isLid = true;
     }
     
     /**
