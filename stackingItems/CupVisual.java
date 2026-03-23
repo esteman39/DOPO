@@ -2,27 +2,20 @@
  * Representa la visualizacion de una taza en el canvas.
  * 
  * @author Thomas Sebastian Garcia Gomez & Esteban Muñoz Arce 
- * @version 1.0 (14/02/2026)
+ * @version 2.0 (23/03/2026)
  */
-public class CupVisual {
-    private Cup cup;
+public class CupVisual extends Visual{
     private Rectangle leftWall;
     private Rectangle rightWall;
-    private Rectangle base;
-    //private LidVisual lidVisual;
-    private boolean isVisible;
     
     /**
      * Constructor de CupVisual
      * @param cup la taza a visualizar
      */
-    public CupVisual(Cup cup) {
-        this.cup = cup;
+    public CupVisual(Cup cup){
+        super(cup);
         this.leftWall = new Rectangle();
         this.rightWall = new Rectangle();
-        this.base = new Rectangle();
-        //this.lidVisual = null;
-        this.isVisible = false;
         
         // Asignar color
         assignColor();
@@ -34,8 +27,9 @@ public class CupVisual {
      * @param y posicion Y (base de la taza)
      * @param scale escala de pixeles por cm
      */
+    @Override
     public void draw(int x, int y, double scale) {
-        int heightCm = cup.getHeight();
+        int heightCm = item.getHeight();
         int heightPx = (int)(heightCm * scale);
         int thicknessPx = (int)scale;
         
@@ -55,21 +49,12 @@ public class CupVisual {
         leftWall.makeVisible();
         rightWall.makeVisible();
         isVisible = true;
-        
-        // Dibujar tapa si existe
-        /*
-        if (cup.hasLid()) {
-            if (lidVisual == null) {
-                lidVisual = new LidVisual(cup.getLid());
-            }
-            lidVisual.draw(x, topY - thicknessPx, scale);
-        }
-        */
     }
     
     /**
      * Oculta la taza
      */
+    @Override
     public void erase() {
         if (isVisible) {
             base.makeInvisible();
@@ -79,6 +64,7 @@ public class CupVisual {
         }
     }
     
+    @Override
     public void makeVisible() {
         if (!isVisible) {
             base.makeVisible();
@@ -88,6 +74,7 @@ public class CupVisual {
         }
     }
     
+    @Override
     public void makeInvisible() {
         if (isVisible) {
             base.makeInvisible();
@@ -98,46 +85,13 @@ public class CupVisual {
     }
     
     /**
-     * Actualiza la visualizacion de la tapa
-     */
-    /*
-    public void updateLid(int x, int y, double scale) {
-        if (cup.hasLid()) {
-            if (lidVisual == null) {
-                String cupColor = getColor();
-                lidVisual = new LidVisual(cup.getLid(), cupColor);
-            }
-            lidVisual.draw(x, y, scale);
-        } else {
-            if (lidVisual != null) {
-                lidVisual.erase();
-                lidVisual = null;
-            }
-        }
-    }
-    */
-    
-    /**
      * Asigna un color a la taza segun su numero
      */
-    private void assignColor() {
-        String[] colors = {"red", "blue", "yellow", "magenta", "green"};
-        String color = colors[(cup.getNumber() - 1) % colors.length];
-        
+    @Override
+    protected void assignColor(){
+        String color = defineColor();
         base.changeColor(color);
         leftWall.changeColor(color);
         rightWall.changeColor(color);
-    }
-    
-    /**
-     * Obtiene el color de la taza
-     */
-    private String getColor() {
-        String[] colors = {"red", "blue", "yellow", "magenta", "green"};
-        return colors[(cup.getNumber() - 1) % colors.length];
-    }
-    
-    public Cup getCup() {
-        return cup;
     }
 }

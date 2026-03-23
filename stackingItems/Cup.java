@@ -3,7 +3,7 @@
  * La taza i tiene altura 2i - 1 cm.
  * 
  * @author Thomas Sebastian Garcia Gomez & Esteban Muñoz Arce 
- * @version 1.0 (14/02/2026)
+ * @version 3.0 (23/03/2026)
  */
 public class Cup extends Item{
     private Lid lid;
@@ -14,7 +14,8 @@ public class Cup extends Item{
      * @param number numero de la taza
      */
     public Cup(int number){
-        super(number, "Cup");
+        super(number);
+        setType();
         this.lid = null;
         this.isLid = false;
     }
@@ -46,5 +47,11 @@ public class Cup extends Item{
      */
     public void removeLid() {
         this.lid = null;
+        this.isLid = false;
+    }
+    
+    @Override
+    public void setType(){
+        type = "Cup";
     }
 }

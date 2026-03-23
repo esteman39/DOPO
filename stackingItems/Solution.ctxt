@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Solution
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Solution\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Solution\ here.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\r\n\ @version\ 1.0\ (28/02/2026)\r\n
 comment1.params=numCups\ numHeight
 comment1.target=Solution(int,\ long)
 comment1.text=\r\n\ Esta\ es\ la\ clase\ que\ determina\ la\ solucion\ del\ ejercicio\ planteado.\r\n\ @param\:\ numCups\ es\ el\ entero\ que\ representa\ la\ cantidad\ de\ copas\ con\ las\ que\ se\ puede\ trabajar,\ sin\ que\ estas\ se\ repitan\r\n\ @param\:\ numHeight\ es\ el\ entero\ que\ representa\ la\ altura\ que\ se\ desea\ alcanzar\ en\ el\ ejercicio.\r\n

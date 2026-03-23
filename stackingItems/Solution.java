@@ -3,8 +3,8 @@ import java.util.ArrayList;
 /**
  * Write a description of class Solution here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Thomas Sebastian Garcia Gomez & Esteban Muñoz Arce
+ * @version 1.0 (28/02/2026)
  */
 public class Solution{
     private int maxCups;

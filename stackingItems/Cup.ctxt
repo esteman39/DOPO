@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Cup
-comment0.text=\r\n\ Representa\ una\ taza\ cilindrica\ del\ simulador.\r\n\ La\ taza\ i\ tiene\ altura\ 2i\ -\ 1\ cm.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\ \r\n\ @version\ 1.0\ (14/02/2026)\r\n
+comment0.text=\r\n\ Representa\ una\ taza\ cilindrica\ del\ simulador.\r\n\ La\ taza\ i\ tiene\ altura\ 2i\ -\ 1\ cm.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\ \r\n\ @version\ 3.0\ (23/03/2026)\r\n
 comment1.params=number
 comment1.target=Cup(int)
 comment1.text=\r\n\ Constructor\ de\ Cup\r\n\ @param\ number\ numero\ de\ la\ taza\r\n
@@ -16,4 +16,6 @@ comment4.text=\r\n\ Coloca\ una\ tapa\ en\ la\ taza\r\n
 comment5.params=
 comment5.target=void\ removeLid()
 comment5.text=\r\n\ Remueve\ la\ tapa\ de\ la\ taza\r\n
-numComments=6
+comment6.params=
+comment6.target=void\ setType()
+numComments=7

@@ -2,14 +2,16 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 
 public class TowerContestTest {
-
     private TowerContest tc;
 
     @Before
     public void setUp(){
-        tc = new TowerContest();
+        tc = new TowerContest(0, 0);
     }
 
     @After
@@ -20,18 +22,24 @@ public class TowerContestTest {
     // ¿Qué retorna solve con el caso del enunciado?
     @Test
     public void accordingGMShouldSolveOfficialCase(){
-        assertEquals("7 3 5 1", tc.solve(4, 9));
+        tc.changeCase(4, 9);
+        ArrayList<Integer> expectedOutput = new ArrayList<>(Arrays.asList(7, 3, 5, 1));
+        assertEquals(expectedOutput, tc.solve());
     }
 
     // ¿Qué retorna solve cuando es imposible?
     @Test
     public void accordingGMShouldReturnImpossibleWhenNoSolution(){
-        assertEquals("impossible", tc.solve(4, 2));
+        tc.changeCase(4, 2);
+        ArrayList<Integer> expectedOutput = new ArrayList<>();
+        assertEquals(expectedOutput, tc.solve());
     }
 
     // ¿Qué retorna solve con una sola taza?
     @Test
     public void accordingGMShouldSolveWithOneCup(){
-        assertEquals("1", tc.solve(1, 1));
+        tc.changeCase(1, 1);
+        ArrayList<Integer> expectedOutput = new ArrayList<>(Arrays.asList(1));
+        assertEquals(expectedOutput, tc.solve());
     }
 }

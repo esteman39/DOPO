@@ -3,19 +3,10 @@
  * La tapa se dibuja como un rectangulo del mismo color que su taza.
  * 
  * @author Thomas Sebastian Garcia Gomez & Esteban Muñoz Arce
- * @version 2.0 (28/02/2026)
+ * @version 2.0 (23/03/2026)
  */
-public class LidVisual {
-    
-    /** La tapa del modelo que esta siendo visualizada. */
-    private Lid lid;
-    
-    /** Rectangulo que representa visualmente la tapa. */
-    private Rectangle rectangle;
+public class LidVisual extends Visual{
     private Rectangle diference;
-    
-    /** Indica si la tapa esta actualmente visible en el canvas. */
-    private boolean isVisible;
     
     /**
      * Crea la representacion visual de una tapa.
@@ -23,9 +14,8 @@ public class LidVisual {
      * 
      * @param lid la tapa del modelo a visualizar
      */
-    public LidVisual(Lid lid) {
-        this.lid = lid;
-        this.rectangle = new Rectangle();
+    public LidVisual(Lid lid){
+        super(lid);
         this.diference = new Rectangle();
 
         assignColor();
@@ -41,36 +31,28 @@ public class LidVisual {
      * @param y     posicion Y en pixeles (esquina superior izquierda)
      * @param scale escala de pixeles por centimetro
      */
+    @Override
     public void draw(int x, int y, double scale) {
-        int widthPx  = (int)(lid.getWidth() * scale);
+        int widthPx  = (int)(item.getHeight() * scale);
         int heightPx = (int) scale; // la tapa mide 1 cm de alto
         
-        rectangle.changeSize(heightPx, widthPx);
+        base.changeSize(heightPx, widthPx);
         diference.changeSize(10, widthPx);
-        rectangle.changePosition(x, y);
+        base.changePosition(x, y);
         diference.changePosition(x, y);
         diference.changeColor("white");
-        rectangle.makeVisible();
+        base.makeVisible();
         diference.makeVisible();
         isVisible = true;
-    }
-    
-    
-    /**
-     * Retorna la tapa del modelo asociada a este visual.
-     * 
-     * @return la tapa Lid
-     */
-    public Lid getLid(){
-        return lid;
     }
     
     /**
      * Oculta la tapa del canvas.
      */
+    @Override
     public void erase() {
         if (isVisible) {
-            rectangle.makeInvisible();
+            base.makeInvisible();
             diference.makeInvisible();
             isVisible = false;
         }
@@ -79,9 +61,10 @@ public class LidVisual {
     /**
      * Hace visible la tapa si estaba oculta.
      */
+    @Override
     public void makeVisible() {
         if (!isVisible) {
-            rectangle.makeVisible();
+            base.makeVisible();
             diference.makeVisible();
             isVisible = true;
         }
@@ -90,26 +73,21 @@ public class LidVisual {
     /**
      * Hace invisible la tapa si estaba visible.
      */
+    @Override
     public void makeInvisible() {
         if (isVisible) {
-            rectangle.makeInvisible();
+            base.makeInvisible();
             diference.makeInvisible();
             isVisible = false;
         }
     }
-    
+
     /**
-     * Asigna el color al rectangulo segun el numero de la tapa.
-     * El color coincide con el de la taza del mismo numero.
-
-        /**
      * Asigna un color a la taza segun su numero
-
      */
-    private void assignColor() {
-        String[] colors = {"red", "blue", "yellow", "magenta", "green"};
-        String color = colors[(lid.getNumber() - 1) % colors.length];
-
-        rectangle.changeColor(color);
+    @Override
+    protected void assignColor() {
+        String color = defineColor();
+        base.changeColor(color);
     }
 }
