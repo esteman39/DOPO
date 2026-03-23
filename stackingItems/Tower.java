@@ -34,16 +34,16 @@ import javax.swing.JOptionPane;
  *     stackLids.get(i) != null → posicion i es una tapa
  *
  * @author Thomas Sebastian Garcia Gomez & Esteban Muñoz Arce
- * @version 2.0 (28/02/2026)
+ * @version 4.0 (23/03/2026)
  */
 public class Tower {
 
     // =========================================================
     // ATRIBUTOS
     // =========================================================
-
-    private ArrayList<Cup> stack;
-    private ArrayList<Lid> stackLids;
+    
+    private ArrayList<Item> stack;
+    private int[] historyLids;
     private int maxCups;
     private int maxHeight;
     private int currentHeight;
@@ -51,8 +51,7 @@ public class Tower {
     private ArrayList<Integer> space;
     private ArrayList<States> history;
     private TowerGrid grid;
-    private ArrayList<CupVisual> cupVisuals;
-    private ArrayList<LidVisual> lidVisuals;
+    private ArrayList<Visual> visuals;
     private boolean isVisible;
 
     // =========================================================
@@ -83,7 +82,6 @@ public class Tower {
      * Agrega una taza a la cima de la torre.
      * Valida numero positivo, que quepa en ancho y alto, y unicidad.
      * Requisito 2 - Ciclo 1.
-     *
      * @param cupNumber numero de la taza (>= 1)
      */
     public void pushCup(int cupNumber) {
@@ -95,29 +93,37 @@ public class Tower {
             showError("La taza " + cupNumber + " supera el ancho maximo");
             return;
         }
-        if (cupExistsInStack(cupNumber)) {
+        if (itemExistsInStack(cupNumber, "Cup")) {
             showError("La taza " + cupNumber + " ya esta en la torre");
             return;
         }
-
+        
         history.add(new States(currentHeight, currentLevel, new ArrayList<>(space)));
 
         Cup newCup = new Cup(cupNumber);
-        int lidIdx = findLidIndex(cupNumber);
-        if (lidIdx != -1) newCup.setLid(stackLids.get(lidIdx));
+        int lidIdx = findItemIndex(cupNumber, "Lid");
+        if (lidIdx != -1){
+            Lid lidFromTower = (Lid) stack.get(lidIdx);
+            newCup.setLid(lidFromTower);
+        }
 
         stack.add(newCup);
-        stackLids.add(null);
         updateStackLogic(newCup.getHeight());
 
         CupVisual visual = new CupVisual(newCup);
-        cupVisuals.add(visual);
-        if (isVisible) drawCup(visual, currentLevel);
+        visuals.add(visual);
+        if (isVisible) drawItem(visual, currentLevel);
         currentLevel += 1;
 
         if (currentHeight > maxHeight) {
             showError("La taza " + cupNumber + " supera la altura maxima");
             popCup();
+        }
+        
+        if(!itemExistsInStack(cupNumber, "Lid")){
+            if(historyLids[cupNumber - 1] == 1){
+                pushLid(cupNumber);
+            }
         }
     }
 
@@ -127,47 +133,57 @@ public class Tower {
      * Requisito 2 - Ciclo 1.
      */
     public void popCup() {
-        if (!hasCupsInStack()) {
+        if (!hasItemsInStack("Cup")) {
             showError("No hay tazas para remover");
             return;
         }
 
         ArrayList<Integer> lidsAbove = new ArrayList<>();
-        int topCupIdx = getLastCupIndex();
+        int topCupIdx = getLastItemIndex("Cup");
+        int numCup = stack.get(topCupIdx).getNumber();
         for (int i = stack.size() - 1; i > topCupIdx; i--) {
-            if (stackLids.get(i) != null) {
-                lidsAbove.add(stackLids.get(i).getNumber());
-                removeLidVisualLast();
+            if (stack.get(i).getType().equals("Lid")){
+                lidsAbove.add(stack.get(i).getNumber());
+                removeLastVisual("Lid");
                 removeLastFromStack();
                 restoreLastState();
             }
         }
 
-        removeCupVisualLast();
+        removeLastVisual("Cup");
         removeLastFromStack();
         restoreLastState();
 
         for (int i = lidsAbove.size() - 1; i >= 0; i--) {
             pushLid(lidsAbove.get(i));
         }
+
+        if(historyLids[numCup - 1] == 1){
+            removeLid(numCup);
+            historyLids[numCup - 1] = 1;
+        }        
     }
 
     /**
      * Remueve una taza especifica de cualquier posicion.
      * Los elementos encima se guardan y se vuelven a apilar.
      * Requisito 2 - Ciclo 1.
-     *
      * @param cupNumber numero de la taza a remover
      */
     public void removeCup(int cupNumber) {
-        int index = findCupIndex(cupNumber);
-        if (index == -1) {
+        int index = findItemIndex(cupNumber, "Cup");
+        if (index == -1){
             showError("No se encontro la taza " + cupNumber);
             return;
         }
         ArrayList<String[]> above = collectAbove(index);
         popCup();
         restoreAbove(above);
+        
+        if(itemExistsInStack(cupNumber, "Lid")){
+            removeLid(cupNumber);
+            historyLids[cupNumber - 1] = 1;
+        }
     }
 
     // ---------------------------------------------------------
@@ -181,7 +197,7 @@ public class Tower {
      *
      * @param lidNumber numero de la tapa (>= 1)
      */
-    public void pushLid(int lidNumber) {
+    public void pushLid(int lidNumber){
         if (lidNumber <= 0) {
             showError("El numero de tapa debe ser positivo");
             return;
@@ -190,7 +206,7 @@ public class Tower {
             showError("La tapa " + lidNumber + " supera el ancho maximo");
             return;
         }
-        if (lidExistsInStack(lidNumber)) {
+        if (itemExistsInStack(lidNumber, "Lid")) {
             showError("La tapa " + lidNumber + " ya esta en la torre");
             return;
         }
@@ -198,27 +214,36 @@ public class Tower {
         history.add(new States(currentHeight, currentLevel, new ArrayList<>(space)));
 
         Lid newLid = new Lid(lidNumber);
+        
         // Solo auto-asociar si la taza del mismo numero esta justo
         // en la cima actual (posicion inmediatamente anterior en el stack).
         // Si no es adyacente, cover() se encarga de la asociacion.
-        int lastCupIdx = getLastCupIndex();
-        if (lastCupIdx != -1 && stack.get(lastCupIdx).getNumber() == lidNumber) {
-            stack.get(lastCupIdx).setLid(newLid);
+
+        if (itemExistsInStack(lidNumber, "Cup")){
+            int cupIdx = findItemIndex(lidNumber, "Cup");
+            Cup modificateCup = (Cup) stack.get(cupIdx);
+            modificateCup.setLid(newLid);
         }
 
-        stack.add(null);
-        stackLids.add(newLid);
-        updateStackLogicLid(newLid.getWidth());
+        stack.add(newLid);
+        updateStackLogicLid(newLid.getHeight());
 
         LidVisual visual = new LidVisual(newLid);
-        lidVisuals.add(visual);
-        if (isVisible) drawLid(visual, currentLevel);
+        visuals.add(visual);
+        if (isVisible) drawItem(visual, currentLevel);
         currentLevel += 1;
 
-        if (currentHeight > maxHeight) {
+        if (currentHeight > maxHeight){
             showError("La tapa " + lidNumber + " supera la altura maxima");
-            popLid();
+            if(stack.get(stack.size() - 2).getType().equals("Cup") && stack.get(stack.size() - 2).getNumber() == lidNumber){
+                popCup();
+            }
+            else{
+                popLid();
+            }
         }
+        
+        historyLids[lidNumber - 1] = 1;
     }
 
     /**
@@ -227,33 +252,38 @@ public class Tower {
      * Requisito 3 - Ciclo 1.
      */
     public void popLid() {
-        if (!hasLidsInStack()) {
+        if (!hasItemsInStack("Lid")) {
             showError("No hay tapas para remover");
             return;
         }
 
         ArrayList<Integer> cupsAbove = new ArrayList<>();
-        int topLidIdx = getLastLidIndex();
+        int topLidIdx = getLastItemIndex("Lid");
         for (int i = stack.size() - 1; i > topLidIdx; i--) {
-            if (stack.get(i) != null) {
+            if (stack.get(i).getType().equals("Cup")) {
                 cupsAbove.add(stack.get(i).getNumber());
-                removeCupVisualLast();
+                removeLastVisual("Cup");
                 removeLastFromStack();
                 restoreLastState();
             }
         }
 
-        int lidNum = stackLids.get(topLidIdx).getNumber();
-        int cupIdx = findCupIndex(lidNum);
-        if (cupIdx != -1) stack.get(cupIdx).removeLid();
+        int lidNum = stack.get(topLidIdx).getNumber();
+        int cupIdx = findItemIndex(lidNum, "Cup");
+        if (cupIdx != -1){
+            Cup cup = (Cup) stack.get(cupIdx);
+            cup.removeLid();
+        }
 
-        removeLidVisualLast();
+        removeLastVisual("Lid");
         removeLastFromStack();
         restoreLastState();
 
         for (int i = cupsAbove.size() - 1; i >= 0; i--) {
             pushCup(cupsAbove.get(i));
         }
+        
+        historyLids[lidNum - 1] = 0;
     }
 
     /**
@@ -264,7 +294,7 @@ public class Tower {
      * @param lidNumber numero de la tapa a remover
      */
     public void removeLid(int lidNumber) {
-        int index = findLidIndex(lidNumber);
+        int index = findItemIndex(lidNumber, "Lid");
         if (index == -1) {
             showError("No se encontro la tapa " + lidNumber);
             return;
@@ -284,11 +314,16 @@ public class Tower {
      * Requisito 4 - Ciclo 1.
      */
     public void orderTower() {
-        if (!hasCupsInStack()) return;
-        int[] nums = getCupNumbers();
-        Arrays.sort(nums);
-        reverseArray(nums);
-        rebuildTowerCupsOnly(nums);
+        if (stack.isEmpty()) return;
+        int[] cupNums = getItemNumbers("Cup");
+        Arrays.sort(cupNums);
+        reverseArray(cupNums);
+        int[] lidNums = getItemNumbers("Lid");
+        Arrays.sort(lidNums);
+        reverseArray(lidNums);
+        popAll();
+        rebuildTowerOnlyOneItem(cupNums, "Cup");
+        rebuildTowerOnlyOneItem(lidNums, "Lid");
     }
 
     // ---------------------------------------------------------
@@ -301,10 +336,13 @@ public class Tower {
      * Requisito 5 - Ciclo 1.
      */
     public void reverseTower() {
-        if (!hasCupsInStack()) return;
-        int[] nums = getCupNumbers();
-        reverseArray(nums);
-        rebuildTowerCupsOnly(nums);
+        if (stack.isEmpty()) return;
+        ArrayList<String[]> reverse = new ArrayList<>();
+        ArrayList<String[]> above = collectAbove(-1);
+        for(int i = above.size() - 1; i >= 0; i--){
+            reverse.add(above.get(i));
+        }
+        restoreAbove(reverse);
     }
 
     // ---------------------------------------------------------
@@ -334,9 +372,14 @@ public class Tower {
      */
     public int[] lidedCups() {
         ArrayList<Integer> lided = new ArrayList<>();
-        for (Cup c : stack) {
-            if (c != null && c.hasLid()) lided.add(c.getNumber());
+        for(int i = 0; i < stack.size()-1; i++){
+            if(stack.get(i).getType().equals("Cup") && stack.get(i+1).getType().equals("Lid")){
+                if(stack.get(i).getNumber() == stack.get(i+1).getNumber()){
+                    lided.add(stack.get(i).getNumber());
+                }
+            }
         }
+
         int[] result = new int[lided.size()];
         for (int i = 0; i < lided.size(); i++) result[i] = lided.get(i);
         Arrays.sort(result);
@@ -353,10 +396,10 @@ public class Tower {
     public String[][] stackingItems() {
         ArrayList<String[]> items = new ArrayList<>();
         for (int i = 0; i < stack.size(); i++) {
-            if (stack.get(i) != null) {
+            if (stack.get(i).getType().equals("Cup")) {
                 items.add(new String[]{"cup", String.valueOf(stack.get(i).getNumber())});
-            } else if (stackLids.get(i) != null) {
-                items.add(new String[]{"lid", String.valueOf(stackLids.get(i).getNumber())});
+            } else if (stack.get(i).getType().equals("Lid")) {
+                items.add(new String[]{"lid", String.valueOf(stack.get(i).getNumber())});
             }
         }
         String[][] result = new String[items.size()][2];
@@ -376,8 +419,7 @@ public class Tower {
         if (!isVisible) {
             isVisible = true;
             grid.makeVisible();
-            for (CupVisual cv : cupVisuals) cv.makeVisible();
-            for (LidVisual lv : lidVisuals) lv.makeVisible();
+            for (Visual v : visuals) v.makeVisible();
         }
     }
 
@@ -389,8 +431,7 @@ public class Tower {
         if (isVisible) {
             isVisible = false;
             grid.makeInvisible();
-            for (CupVisual cv : cupVisuals) cv.makeInvisible();
-            for (LidVisual lv : lidVisuals) lv.makeInvisible();
+            for (Visual v : visuals) v.makeInvisible();
         }
     }
 
@@ -453,6 +494,7 @@ public class Tower {
      * @param cups numero de tazas a crear
      */
     public void createTower(int cups) {
+        popAll();
         if (cups > maxCups) {
             showError("El numero de tazas supera el ancho maximo de la torre");
             return;
@@ -520,19 +562,17 @@ public class Tower {
         if (stack.size() < 2) return;
 
         for (int i = 0; i < stack.size() - 1; i++) {
-            if (stack.get(i) == null) continue;
-            Cup cup = stack.get(i);
+            if (stack.get(i).getType().equals("Lid")) continue;
+            Cup cup = (Cup) stack.get(i);
 
-            if (stackLids.get(i + 1) == null) continue;
-            Lid lid = stackLids.get(i + 1);
+            if (stack.get(i + 1).getType().equals("Cup")) continue;
+            Lid lid = (Lid) stack.get(i + 1);
 
             // Si la taza y la tapa tienen el mismo numero y la taza no tiene tapa aun
             if (cup.getNumber() == lid.getNumber() && !cup.hasLid()) {
                 cup.setLid(lid);
             }
         }
-
-        if (isVisible) redrawAll();
     }
 
     // ---------------------------------------------------------
@@ -575,14 +615,13 @@ public class Tower {
         this.maxHeight  = maxHeight;
         this.maxCups    = (maxWidth + 1) / 2;
         this.stack      = new ArrayList<>();
-        this.stackLids  = new ArrayList<>();
         this.history    = new ArrayList<>();
+        this.historyLids   = new int[maxCups];
         this.currentHeight = 0;
         this.currentLevel  = 0;
         this.space      = new ArrayList<>();
         this.grid       = new TowerGrid(maxHeight, maxWidth);
-        this.cupVisuals = new ArrayList<>();
-        this.lidVisuals = new ArrayList<>();
+        this.visuals    = new ArrayList<>();
         this.isVisible  = true;
     }
 
@@ -652,81 +691,82 @@ public class Tower {
         }
         return simHeight;
     }
-
-    private int findCupIndex(int number) {
-        for (int i = 0; i < stack.size(); i++) {
-            if (stack.get(i) != null && stack.get(i).getNumber() == number) return i;
-        }
-        return -1;
-    }
-
-    private int findLidIndex(int number) {
-        for (int i = 0; i < stackLids.size(); i++) {
-            if (stackLids.get(i) != null && stackLids.get(i).getNumber() == number) return i;
+    
+    private int findItemIndex(int number, String type){
+        for(int i = 0; i < stack.size(); i++){
+            if(stack.get(i).getType().equals(type) && stack.get(i).getNumber() == number) return i;
         }
         return -1;
     }
 
     private int findIndexOf(String[] obj) {
         int num = Integer.parseInt(obj[1]);
-        return obj[0].equals("cup") ? findCupIndex(num) : findLidIndex(num);
+        return obj[0].equals("cup") ? findItemIndex(num, "Cup") : findItemIndex(num, "Lid");
     }
-
-    private boolean cupExistsInStack(int number) { return findCupIndex(number) != -1; }
-    private boolean lidExistsInStack(int number) { return findLidIndex(number) != -1; }
-
-    private boolean hasCupsInStack() {
-        for (Cup c : stack) if (c != null) return true;
+    
+    private boolean itemExistsInStack(int number, String type){ return findItemIndex(number, type) != -1;}
+    
+    private boolean hasItemsInStack(String type){
+        for (Item c : stack){
+            if (c.getType().equals(type)){
+                return true;
+            }
+        }
         return false;
     }
-
-    private boolean hasLidsInStack() {
-        for (Lid l : stackLids) if (l != null) return true;
-        return false;
-    }
-
-    private int getLastCupIndex() {
-        for (int i = stack.size() - 1; i >= 0; i--) if (stack.get(i) != null) return i;
-        return -1;
-    }
-
-    private int getLastLidIndex() {
-        for (int i = stackLids.size() - 1; i >= 0; i--) if (stackLids.get(i) != null) return i;
-        return -1;
+    
+    private int getLastItemIndex(String type){
+        for (int i = stack.size() - 1; i >= 0; i--) if (stack.get(i).getType().equals(type)) return i;
+        return -1;   
     }
 
     private ArrayList<String[]> buildSequence() {
         ArrayList<String[]> seq = new ArrayList<>();
         for (int i = 0; i < stack.size(); i++) {
-            if (stack.get(i) != null)
+            if (stack.get(i).getType().equals("Cup"))
                 seq.add(new String[]{"cup", String.valueOf(stack.get(i).getNumber())});
-            else if (stackLids.get(i) != null)
-                seq.add(new String[]{"lid", String.valueOf(stackLids.get(i).getNumber())});
+            else if (stack.get(i).getType().equals("Lid"))
+                seq.add(new String[]{"lid", String.valueOf(stack.get(i).getNumber())});
         }
         return seq;
     }
-
-    private int[] getCupNumbers() {
-        ArrayList<Integer> nums = new ArrayList<>();
-        for (Cup c : stack) if (c != null) nums.add(c.getNumber());
-        int[] arr = new int[nums.size()];
-        for (int i = 0; i < nums.size(); i++) arr[i] = nums.get(i);
+    
+    private int[] getItemNumbers(String type){
+        ArrayList<Integer> numItems = new ArrayList<>();
+        for(Item c : stack){
+            if(c.getType().equals(type)){
+                int numItem = c.getNumber();
+                numItems.add(numItem);
+            }
+        }
+        int[] arr = new int[numItems.size()];
+        for(int i = 0; i < numItems.size(); i++){
+            arr[i] = numItems.get(i);
+        }
         return arr;
     }
 
-    private void rebuildTowerCupsOnly(int[] numbers) {
-        popAll();
-        for (int num : numbers) pushCup(num);
+    private void rebuildTowerOnlyOneItem(int[] numbers, String type) {
+        if(type.equals("Cup")){
+            for(int i = 0; i < numbers.length; i++){
+                pushCup(numbers[i]);
+            }
+        }
+        else if(type.equals("Lid")){
+            for(int i = 0; i < numbers.length; i++){
+                pushLid(numbers[i]);
+            }
+        }
     }
 
-    private ArrayList<String[]> collectAbove(int index) {
+    private ArrayList<String[]> collectAbove(int index){
         ArrayList<String[]> above = new ArrayList<>();
         for (int i = stack.size() - 1; i > index; i--) {
-            if (stack.get(i) != null) {
+            if (stack.get(i).getType().equals("Cup")) {
                 above.add(new String[]{"cup", String.valueOf(stack.get(i).getNumber())});
                 popCup();
             } else {
-                above.add(new String[]{"lid", String.valueOf(stackLids.get(i).getNumber())});
+                above.add(new String[]{"lid", String.valueOf(stack.get(i).getNumber())});
                 popLid();
             }
         }
@@ -735,14 +775,19 @@ public class Tower {
 
     private void restoreAbove(ArrayList<String[]> above) {
         for (int i = above.size() - 1; i >= 0; i--) {
-            if (above.get(i)[0].equals("cup")) pushCup(Integer.parseInt(above.get(i)[1]));
-            else                               pushLid(Integer.parseInt(above.get(i)[1]));
+            if (above.get(i)[0].equals("cup")){
+                pushCup(Integer.parseInt(above.get(i)[1]));
+            }
+            else{
+                pushLid(Integer.parseInt(above.get(i)[1]));
+            }
         }
     }
 
     private void popAll() {
+        Arrays.fill(historyLids, 0);
         while (!stack.isEmpty()) {
-            if (stack.get(stack.size() - 1) != null) popCup();
+            if (stack.get(stack.size() - 1).getType().equals("Cup")) popCup();
             else popLid();
         }
     }
@@ -759,29 +804,21 @@ public class Tower {
     private void removeLastFromStack() {
         int last = stack.size() - 1;
         stack.remove(last);
-        stackLids.remove(last);
     }
-
-    private void removeCupVisualLast() {
-        int last = cupVisuals.size() - 1;
-        cupVisuals.get(last).erase();
-        cupVisuals.remove(last);
+    
+    private void removeLastVisual(String itemType){
+        int last = visuals.size() - 1;
+        String type = visuals.get(last).getItem().getType();
+        while(!type.equals(itemType)){
+            last -= 1;
+            type = visuals.get(last).getItem().getType();
+        }
+        visuals.get(last).erase();
+        visuals.remove(last);
     }
-
-    private void removeLidVisualLast() {
-        int last = lidVisuals.size() - 1;
-        lidVisuals.get(last).erase();
-        lidVisuals.remove(last);
-    }
-
-    private void drawCup(CupVisual visual, int level) {
-        int xPos = calculateXPosition(visual.getCup().getNumber());
-        int yPos = grid.getYOrigin() - (int) grid.getScale();
-        visual.draw(xPos, yPos - (int)(level * grid.getScale()), grid.getScale());
-    }
-
-    private void drawLid(LidVisual visual, int level) {
-        int xPos = calculateXPosition(visual.getLid().getNumber());
+    
+    private void drawItem(Visual visual, int level){
+        int xPos = calculateXPosition(visual.getItem().getNumber());
         int yPos = grid.getYOrigin() - (int) grid.getScale();
         visual.draw(xPos, yPos - (int)(level * grid.getScale()), grid.getScale());
     }
@@ -792,10 +829,9 @@ public class Tower {
     }
 
     private void redrawAll() {
-        int cupIdx = 0, lidIdx = 0, level = 0;
+        int level = 0;
         for (int i = 0; i < stack.size(); i++) {
-            if (stack.get(i) != null)      drawCup(cupVisuals.get(cupIdx++), level);
-            else if (stackLids.get(i) != null) drawLid(lidVisuals.get(lidIdx++), level);
+            drawItem(visuals.get(i), level);
             level++;
         }
     }
