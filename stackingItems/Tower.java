@@ -112,7 +112,13 @@ public class Tower {
 
         CupVisual visual = new CupVisual(newCup);
         visuals.add(visual);
-        if (isVisible) drawItem(visual, currentLevel);
+        if (isVisible){
+            drawItem(visual, currentLevel);
+        }
+        else{
+            drawItem(visual, currentLevel);
+            visual.makeInvisible();
+        }
         currentLevel += 1;
 
         if (currentHeight > maxHeight) {
@@ -219,10 +225,22 @@ public class Tower {
         // en la cima actual (posicion inmediatamente anterior en el stack).
         // Si no es adyacente, cover() se encarga de la asociacion.
 
+        
         if (itemExistsInStack(lidNumber, "Cup")){
             int cupIdx = findItemIndex(lidNumber, "Cup");
             Cup modificateCup = (Cup) stack.get(cupIdx);
+            CupVisual modificateCupVisual = (CupVisual) visuals.get(cupIdx);
             modificateCup.setLid(newLid);
+            if(cupIdx == stack.size() - 1){
+                modificateCup.coverCup();
+                modificateCupVisual.isLided();
+            }
+            // Registrar tazas que quedaron adentro
+            for (int i = cupIdx + 1; i < stack.size(); i++) {
+                if (stack.get(i).getType().equals("Cup")) {
+                    modificateCup.addCupInside(stack.get(i).getNumber());
+                }
+            }
         }
 
         stack.add(newLid);
@@ -230,7 +248,14 @@ public class Tower {
 
         LidVisual visual = new LidVisual(newLid);
         visuals.add(visual);
-        if (isVisible) drawItem(visual, currentLevel);
+        if (isVisible){
+            drawItem(visual, currentLevel);
+        }
+        else{
+            drawItem(visual, currentLevel);
+            visual.makeInvisible();
+        }
+        
         currentLevel += 1;
 
         if (currentHeight > maxHeight){
@@ -273,6 +298,8 @@ public class Tower {
         if (cupIdx != -1){
             Cup cup = (Cup) stack.get(cupIdx);
             cup.removeLid();
+            CupVisual cupVisual = (CupVisual) visuals.get(cupIdx);
+            cupVisual.notLided();
         }
 
         removeLastVisual("Lid");
@@ -318,12 +345,8 @@ public class Tower {
         int[] cupNums = getItemNumbers("Cup");
         Arrays.sort(cupNums);
         reverseArray(cupNums);
-        int[] lidNums = getItemNumbers("Lid");
-        Arrays.sort(lidNums);
-        reverseArray(lidNums);
-        popAll();
         rebuildTowerOnlyOneItem(cupNums, "Cup");
-        rebuildTowerOnlyOneItem(lidNums, "Lid");
+    
     }
 
     // ---------------------------------------------------------
@@ -337,12 +360,9 @@ public class Tower {
      */
     public void reverseTower() {
         if (stack.isEmpty()) return;
-        ArrayList<String[]> reverse = new ArrayList<>();
-        ArrayList<String[]> above = collectAbove(-1);
-        for(int i = above.size() - 1; i >= 0; i--){
-            reverse.add(above.get(i));
-        }
-        restoreAbove(reverse);
+        int[] cupNums = getItemNumbers("Cup");
+        reverseArray(cupNums);
+        rebuildTowerOnlyOneItem(cupNums, "Cup");
     }
 
     // ---------------------------------------------------------
@@ -418,7 +438,6 @@ public class Tower {
     public void makeVisible() {
         if (!isVisible) {
             isVisible = true;
-            grid.makeVisible();
             for (Visual v : visuals) v.makeVisible();
         }
     }
@@ -430,7 +449,6 @@ public class Tower {
     public void makeInvisible() {
         if (isVisible) {
             isVisible = false;
-            grid.makeInvisible();
             for (Visual v : visuals) v.makeInvisible();
         }
     }
@@ -747,6 +765,11 @@ public class Tower {
     }
 
     private void rebuildTowerOnlyOneItem(int[] numbers, String type) {
+        int[] lidMemory = Arrays.copyOf(historyLids, historyLids.length);
+    
+        popAll(); 
+        
+        historyLids = lidMemory;
         if(type.equals("Cup")){
             for(int i = 0; i < numbers.length; i++){
                 pushCup(numbers[i]);

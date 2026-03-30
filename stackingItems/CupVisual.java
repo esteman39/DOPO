@@ -7,6 +7,9 @@
 public class CupVisual extends Visual{
     private Rectangle leftWall;
     private Rectangle rightWall;
+    private Rectangle diference;
+    private int x;
+    private int y;
     
     /**
      * Constructor de CupVisual
@@ -16,6 +19,7 @@ public class CupVisual extends Visual{
         super(cup);
         this.leftWall = new Rectangle();
         this.rightWall = new Rectangle();
+        this.diference = new Rectangle();
         
         // Asignar color
         assignColor();
@@ -29,6 +33,8 @@ public class CupVisual extends Visual{
      */
     @Override
     public void draw(int x, int y, double scale) {
+        this.x = x;
+        this.y = y;
         int heightCm = item.getHeight();
         int heightPx = (int)(heightCm * scale);
         int thicknessPx = (int)scale;
@@ -37,10 +43,12 @@ public class CupVisual extends Visual{
         leftWall.changeSize(heightPx, thicknessPx);
         rightWall.changeSize(heightPx, thicknessPx);
         base.changeSize(thicknessPx, heightPx);
+        diference.changeSize(thicknessPx, heightPx);
         
         // Posicionar
         int topY = y - heightPx + (int)scale;
         base.changePosition(x, y);
+        diference.changePosition(x, y);
         leftWall.changePosition(x, topY);
         rightWall.changePosition(x + heightPx - thicknessPx, topY);
         
@@ -51,6 +59,15 @@ public class CupVisual extends Visual{
         isVisible = true;
     }
     
+    public void isLided(){
+        diference.changeColor("white");
+        diference.makeVisible();
+    }
+    
+    public void notLided(){
+        diference.makeInvisible();
+    }
+    
     /**
      * Oculta la taza
      */
@@ -58,6 +75,7 @@ public class CupVisual extends Visual{
     public void erase() {
         if (isVisible) {
             base.makeInvisible();
+            diference.makeInvisible();
             leftWall.makeInvisible();
             rightWall.makeInvisible();
             isVisible = false;
@@ -80,6 +98,7 @@ public class CupVisual extends Visual{
             base.makeInvisible();
             leftWall.makeInvisible();
             rightWall.makeInvisible();
+            diference.makeInvisible();
             isVisible = false;
         }
     }

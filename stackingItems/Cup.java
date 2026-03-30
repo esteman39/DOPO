@@ -1,3 +1,5 @@
+import java.util.*;
+
 /**
  * Representa una taza cilindrica del simulador.
  * La taza i tiene altura 2i - 1 cm.
@@ -8,6 +10,7 @@
 public class Cup extends Item{
     private Lid lid;
     private boolean isLid;
+    private ArrayList<Integer> cupsInside;
     
     /**
      * Constructor de Cup
@@ -18,6 +21,7 @@ public class Cup extends Item{
         setType();
         this.lid = null;
         this.isLid = false;
+        cupsInside = new ArrayList<>();
     }
     
     /**
@@ -39,7 +43,22 @@ public class Cup extends Item{
      */
     public void setLid(Lid newLid) {
         this.lid = newLid;
-        this.isLid = true;
+    }
+    
+    public void addCupInside(int number) {
+        cupsInside.add(number);
+    }
+    
+    public ArrayList<Integer> getCupsInside() {
+        return cupsInside;
+    }
+    
+    public boolean hasCupsInside() {
+        return !cupsInside.isEmpty();
+    }
+    
+    public void clearCupsInside() {
+        cupsInside.clear();
     }
     
     /**
@@ -48,6 +67,10 @@ public class Cup extends Item{
     public void removeLid() {
         this.lid = null;
         this.isLid = false;
+    }
+    
+    public void coverCup(){
+        this.isLid = true;
     }
     
     @Override
