@@ -14,10 +14,22 @@ public class Lid extends Item{
     public Lid(int number) {
         super(number);
         setType();
+        setSpecific();
     }
     
+    /**
+     * Este metodo se encarga de asignar el tipo general de un item creado
+     */
     @Override
-    public void setType(){
+    public final void setType(){
         type = "Lid";
+    }
+
+    /**
+     * Este metodo se encarga de asignar el tipo especifico de un item creado
+     */
+    @Override
+    public void setSpecific(){
+        specificType = "Normal";
     }
 }

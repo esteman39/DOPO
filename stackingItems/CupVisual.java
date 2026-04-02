@@ -5,11 +5,12 @@
  * @version 2.0 (23/03/2026)
  */
 public class CupVisual extends Visual{
-    private Rectangle leftWall;
-    private Rectangle rightWall;
-    private Rectangle diference;
-    private int x;
-    private int y;
+    protected Rectangle leftWall;
+    protected Rectangle rightWall;
+    protected Rectangle isLid;
+    protected Rectangle diference;
+    protected int x;
+    protected int y;
     
     /**
      * Constructor de CupVisual
@@ -19,6 +20,7 @@ public class CupVisual extends Visual{
         super(cup);
         this.leftWall = new Rectangle();
         this.rightWall = new Rectangle();
+        this.isLid = new Rectangle();
         this.diference = new Rectangle();
         
         // Asignar color
@@ -43,12 +45,12 @@ public class CupVisual extends Visual{
         leftWall.changeSize(heightPx, thicknessPx);
         rightWall.changeSize(heightPx, thicknessPx);
         base.changeSize(thicknessPx, heightPx);
-        diference.changeSize(thicknessPx, heightPx);
+        isLid.changeSize(thicknessPx, heightPx);
         
         // Posicionar
         int topY = y - heightPx + (int)scale;
         base.changePosition(x, y);
-        diference.changePosition(x, y);
+        isLid.changePosition(x, y);
         leftWall.changePosition(x, topY);
         rightWall.changePosition(x + heightPx - thicknessPx, topY);
         
@@ -60,12 +62,13 @@ public class CupVisual extends Visual{
     }
     
     public void isLided(){
-        diference.changeColor("white");
+        isLid.changeColor("white");
+        isLid.makeVisible();
         diference.makeVisible();
     }
     
     public void notLided(){
-        diference.makeInvisible();
+        isLid.makeInvisible();
     }
     
     /**
@@ -75,9 +78,10 @@ public class CupVisual extends Visual{
     public void erase() {
         if (isVisible) {
             base.makeInvisible();
-            diference.makeInvisible();
+            isLid.makeInvisible();
             leftWall.makeInvisible();
             rightWall.makeInvisible();
+            diference.makeInvisible();
             isVisible = false;
         }
     }
@@ -98,6 +102,7 @@ public class CupVisual extends Visual{
             base.makeInvisible();
             leftWall.makeInvisible();
             rightWall.makeInvisible();
+            isLid.makeInvisible();
             diference.makeInvisible();
             isVisible = false;
         }
@@ -108,6 +113,7 @@ public class CupVisual extends Visual{
      */
     @Override
     protected void assignColor(){
+        diference.changeColor("black");
         String color = defineColor();
         base.changeColor(color);
         leftWall.changeColor(color);

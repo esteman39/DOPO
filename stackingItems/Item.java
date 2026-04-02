@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public abstract class Item{
     protected int number;
     protected String type;
+    protected String specificType;
     
     /**
      * Inicializador de la clase Item que representa todos los elementos que son considerados elementos en el simunador
@@ -17,7 +18,15 @@ public abstract class Item{
         this.number = number;
     }
     
-    public abstract void setType();
+    /**
+     * Este metodo se encarga de asignar el tipo general de un item creado
+     */
+    public abstract void setType(); 
+    
+    /**
+     * Este metodo se encarga de asignar el tipo especifico de un item creado
+     */
+    public abstract void setSpecific();
     
     /**
      * Retorna el numero del elemento.
@@ -35,7 +44,19 @@ public abstract class Item{
         return (2 * number) - 1;
     }
     
+    /**
+     * Retorna el tipo de item que se ha creado, en este caso se hace referencia al tipo general.
+     * @return Retorna una cadena de texto que representa este aspecto.
+     */
     public String getType(){
         return this.type;
+    }
+    
+    /**
+     * Retorna el tipo de item que se ha creado, en este caso se hace referencia al tipo especifico.
+     * @return Retorna una cadena de texto que representa este aspecto.
+     */
+    public String getSpecific(){
+        return this.specificType;
     }
 }

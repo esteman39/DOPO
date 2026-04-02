@@ -19,6 +19,7 @@ public class Cup extends Item{
     public Cup(int number){
         super(number);
         setType();
+        setSpecific();
         this.lid = null;
         this.isLid = false;
         cupsInside = new ArrayList<>();
@@ -26,6 +27,7 @@ public class Cup extends Item{
     
     /**
      * Verifica si la taza tiene tapa
+     * @return regresa un boolean que indica el valor de verdad
      */
     public boolean hasLid() {
         return isLid;
@@ -33,6 +35,7 @@ public class Cup extends Item{
     
     /**
      * Retorna la tapa de la taza
+     * @return regresa la taza
      */
     public Lid getLid() {
         return lid;
@@ -40,6 +43,7 @@ public class Cup extends Item{
     
     /**
      * Coloca una tapa en la taza
+     * @param una tapa en especifico
      */
     public void setLid(Lid newLid) {
         this.lid = newLid;
@@ -72,9 +76,20 @@ public class Cup extends Item{
     public void coverCup(){
         this.isLid = true;
     }
-    
+
+    /**
+     * Este metodo se encarga de asignar el tipo general de un item creado
+     */
     @Override
-    public void setType(){
+    public final void setType(){
         type = "Cup";
+    }
+    
+    /**
+     * Este metodo se encarga de asignar el tipo especifico de un item creado
+     */
+    @Override
+    public void setSpecific(){
+        specificType = "Normal";
     }
 }

@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=VisualCrazy
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ VisualCrazy\ here.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\r\n\ @version\ 1.0\ (01/04/2026)\r\n
+comment1.params=crazy
+comment1.target=VisualCrazy(Crazy)
+comment2.params=x\ y\ scale
+comment2.target=void\ draw(int,\ int,\ double)
+comment2.text=\r\n\ Dibuja\ la\ tapa\ en\ la\ posicion\ especificada\ del\ canvas.\r\n\ @param\ x\ \ \ \ \ posicion\ X\ en\ pixeles\ (esquina\ superior\ izquierda)\r\n\ @param\ y\ \ \ \ \ posicion\ Y\ en\ pixeles\ (esquina\ superior\ izquierda)\r\n\ @param\ scale\ escala\ de\ pixeles\ por\ centimetro\r\n
+numComments=3

@@ -6,7 +6,7 @@
  * @version 2.0 (23/03/2026)
  */
 public class LidVisual extends Visual{
-    private Rectangle diference;
+    protected Rectangle diference;
     
     /**
      * Crea la representacion visual de una tapa.
