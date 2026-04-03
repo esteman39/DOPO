@@ -24,9 +24,9 @@ public class VisualCrazy extends LidVisual{
         int heightPx = (int) scale; // la tapa mide 1 cm de alto
         
         base.changeSize(heightPx, widthPx);
-        diference.changeSize(heightPx - 50, widthPx - 50);
+        diference.changeSize(heightPx - 40, widthPx);
         base.changePosition(x, y);
-        diference.changePosition(x + 25, y);
+        diference.changePosition(x, y);
         diference.changeColor("white");
         base.makeVisible();
         diference.makeVisible();
