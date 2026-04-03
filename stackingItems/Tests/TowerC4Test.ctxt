@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=TowerC4Test
+comment0.text=\r\n\ Estas\ son\ las\ pruebas\ de\ unidad\ para\ el\ Tower\ -\ Ciclo\ 4\r\n\ Todas\ las\ pruebas\ corren\ en\ modo\ invisible\ (sin\ interfaz\ grafica).\r\n\r\n\ Para\ cada\ requisito\ se\ prueban\ dos\ preguntas\:\r\n\ \ \ -\ \u00BFQue\ DEBERIA\ hacer?\ \ (casos\ positivos)\r\n\ \ \ -\ \u00BFQue\ NO\ deberia\ hacer?\ (casos\ negativos\ /\ limites)\r\n\ \r\n\ Convencion\ de\ nombres\:\ accordingGMShould...\ (GM\:\ Garcia,\ Mu\u00F1oz)\r\n\r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\r\n\ @version\ 1.0\ (01/04/2026)\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment1.text=\r\n\ Sets\ up\ the\ test\ fixture.\r\n\r\n\ Called\ before\ every\ test\ case\ method.\r\n
+comment2.params=
+comment2.target=void\ accordingGMShouldAssignSpecific()
+comment2.text=\r\n\ Prueba\ que\ se\ le\ esta\ asignado\ correctamente\ los\ tipos\ especificos\ a\ cada\ una\ de\ las\ nuevas\ tazas\r\n
+comment3.params=
+comment3.target=void\ accordingGMShouldPushCupAndPushLid()
+comment3.text=\r\n\ Muestra\ que\ se\ estan\ ingresando\ copas\ de\ manera\ correcta\ en\ la\ torre.\r\n
+comment4.params=
+comment4.target=void\ accordingGMShouldPopCupAndPopLid()
+comment4.text=\r\n\ Verifica\ que\ los\ nuevos\ elementos\ se\ pueden\ quitar\ de\ manera\ satisfactoria\ en\ la\ torre.\r\n
+comment5.params=
+comment5.target=void\ tearDown()
+comment5.text=\r\n\ Tears\ down\ the\ test\ fixture.\r\n\r\n\ Called\ after\ every\ test\ case\ method.\r\n
+numComments=6
