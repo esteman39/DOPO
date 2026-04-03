@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=TowerAtest
+comment0.text=\r\n\ Estas\ son\ las\ pruebas\ de\ aceptacion\ del\ proyecto\ que\ evidencian\ lo\ mejor\ para\ Tower\ -\ Ciclo\ 4\r\n\ En\ este\ caso,\ para\ verificar\ que\ se\ esta\ cumpliendo\ de\ manera\ correcta\ ser\u00E1n\ con\ interfaz\ grafica.\r\n\r\n\ Para\ cada\ requisito\ se\ prueban\ dos\ preguntas\:\r\n\ \ \ -\ \u00BFQue\ DEBERIA\ hacer?\ \ (casos\ positivos)\r\n\ \ \ -\ \u00BFQue\ NO\ deberia\ hacer?\ (casos\ negativos\ /\ limites)\r\n\ \r\n\ Convencion\ de\ nombres\:\ accordingGMShould...\ (GM\:\ Garcia,\ Mu\u00F1oz)\r\n\r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\r\n\ @version\ 1.0\ (01/04/2026)\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment1.text=\r\n\ Sets\ up\ the\ test\ fixture.\r\n\r\n\ Called\ before\ every\ test\ case\ method.\r\n
+comment2.params=
+comment2.target=void\ accordingGMShouldCreateBaseCase()
+comment2.text=\r\n\ Se\ verificara\ si\ se\ puede\ simular\ el\ escenario\ del\ caso\ base,\ donde\ pueden\ entrar\ 4\ tazas\ como\ altura\ maxima\ 9\r\n
+comment3.params=
+comment3.target=void\ accordingGMShouldCreateTowerWithSpecifics()
+comment3.text=\r\n\ Se\ verifica\ si\ se\ puede\ simular\ un\ escenario\ con\ todo\ tipo\ de\ tazas\ y\ tapas\ especificas\ que\ han\ sido\ creadas\r\n\ para\ este\ caso\ se\ utilizara\ el\ arreglo\ {1,\ 4,\ 3,\ 2}\ donde\ el\ tipo\ de\ cada\ uno\ puede\ variar,\ se\ va\ a\ agregar\r\n\ 1\ tapa\ que\ en\ este\ caso\ ser\u00E1\ la\ tapa\ 4\ de\ tipo\ Crazy\r\n
+comment4.params=
+comment4.target=void\ tearDown()
+comment4.text=\r\n\ Tears\ down\ the\ test\ fixture.\r\n\r\n\ Called\ after\ every\ test\ case\ method.\r\n
+numComments=5
