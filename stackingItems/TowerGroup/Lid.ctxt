@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Lid
+comment0.text=\r\n\ Representa\ una\ tapa\ para\ una\ taza.\r\n\ Cada\ tapa\ mide\ 1\ cm\ de\ alto.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\ \r\n\ @version\ 3.0\ (23/03/2026)\r\n\ \r\n
+comment1.params=number
+comment1.target=Lid(int)
+comment1.text=\r\n\ Constructor\ de\ Lid\r\n\ @param\ number\ numero\ de\ la\ taza\ a\ la\ que\ pertenece\r\n
+comment2.params=
+comment2.target=void\ setType()
+comment2.text=\r\n\ Este\ metodo\ se\ encarga\ de\ asignar\ el\ tipo\ general\ de\ un\ item\ creado\r\n
+comment3.params=
+comment3.target=void\ setSpecific()
+comment3.text=\r\n\ Este\ metodo\ se\ encarga\ de\ asignar\ el\ tipo\ especifico\ de\ un\ item\ creado\r\n
+numComments=4

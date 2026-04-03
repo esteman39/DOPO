@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=Reverse
+comment0.text=\r\n\ Esta\ nueva\ clase\ de\ taza\ tiene\ la\ particularidad\ de\ estar\ al\ del\ reves,\ se\ siguen\ comportando\ como\ una\ taza\ normal,\ la\ diferencia\ es\ que\ esta\r\n\ dada\ la\ vuelta,\ en\ caso\ de\ que\ pase\ la\ altura\ maxima\ se\ saca\ de\ la\ torre\ como\ una\ copa\ normal.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\r\n\ @version\ 1.0\ (01/04/2026)\r\n
+comment1.params=number
+comment1.target=Reverse(int)
+comment2.params=
+comment2.target=void\ setSpecific()
+numComments=3
