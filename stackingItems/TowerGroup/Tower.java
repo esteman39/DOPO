@@ -35,10 +35,22 @@ import javax.swing.JOptionPane;
  *     stack.get(i) != null     → posicion i es una taza
  *     stackLids.get(i) != null → posicion i es una tapa
  *
+ * ============================================================
+ * CICLO 3 - Requisitos 14 al 15 (solucion del simulador)
+ * ============================================================
+ * 14. Crear una clase especial la cual pueda imprimir la solucion del problema
+ * 15. Se muestra la solucion del problema
+ * 
+ * ============================================================
+ * CICLO 4 - Requisitos 16 al 17 (Nuevos elementos)
+ * ============================================================
+ * 16. Agregar nuevos elementos al simulador    → pushCupType(type, numCup), pushLidType(type, numLid)
+ * 17. Se agrega un elemento propio             → pushCupType(type, numCup)
+ * 
  * @author Thomas Sebastian Garcia Gomez & Esteban Muñoz Arce
- * @version 5.0 (01/04/2026)
+ * @version 6.0 (16/04/2026)
  */
-public class Tower {
+public class Tower{
 
     // =========================================================
     // ATRIBUTOS
@@ -55,6 +67,7 @@ public class Tower {
     private TowerGrid grid;
     private ArrayList<Visual> visuals;
     private boolean isVisible;
+    private boolean isOk;
 
     // =========================================================
     // ===================== CICLO 1 ===========================
@@ -89,14 +102,17 @@ public class Tower {
     public void pushCup(int cupNumber) {
         if (cupNumber <= 0) {
             showError("El numero de taza debe ser positivo");
+            isOk = false;
             return;
         }
         if (cupNumber > maxCups) {
             showError("La taza " + cupNumber + " supera el ancho maximo");
+            isOk = false;
             return;
         }
         if (itemExistsInStack(cupNumber, "Cup")) {
             showError("La taza " + cupNumber + " ya esta en la torre");
+            isOk = false;
             return;
         }
         
@@ -122,9 +138,16 @@ public class Tower {
             visual.makeInvisible();
         }
         currentLevel += 1;
+        
+        int i = space.size() - 1;
+        while(space.get(i) != newCup.getHeight()){
+            i -= 1;
+        }
+        newCup.setPositionInSpace(i);
 
         if (currentHeight > maxHeight) {
             showError("La taza " + cupNumber + " supera la altura maxima");
+            isOk = false;
             popCup();
         }
         
@@ -132,7 +155,15 @@ public class Tower {
             if(historyLids[cupNumber - 1] == 1){
                 pushLid(cupNumber);
             }
+            else if(historyLids[cupNumber - 1] == 2){
+                pushLidType("Fearful", cupNumber);
+            }
+            else if(historyLids[cupNumber - 1] == 3){
+                pushLidType("Crazy", cupNumber);
+            }
         }
+        
+        isOk = true;
     }
     
     /**
@@ -143,18 +174,22 @@ public class Tower {
     public void pushCupType(String type, int cupNumber){
         if(!type.equals("Normal") && !type.equals("Opener") && !type.equals("Hierarchical") && !type.equals("Reverse")){
             showError("El tipo de taza que intento ingresar no es valido");
+            isOk = false;
             return;
         }
         if (cupNumber <= 0) {
             showError("El numero de taza debe ser positivo");
+            isOk = false;
             return;
         }
         if (cupNumber > maxCups) {
             showError("La taza " + cupNumber + " supera el ancho maximo");
+            isOk = false;
             return;
         }
         if (itemExistsInStack(cupNumber, "Cup")) {
             showError("La taza " + cupNumber + " ya esta en la torre");
+            isOk = false;
             return;
         }
         
@@ -181,6 +216,13 @@ public class Tower {
                     newItem.setLid(lidFromTower);
                 }
                 updateStackLogic(newItem.getHeight());
+                
+                int i = space.size() - 1;
+                while(space.get(i) != newItem.getHeight()){
+                    i -= 1;
+                }
+                newItem.setPositionInSpace(i);
+                
                 newVisual = new VisualOpener(newItem);
             }
             //En el caso de una copa de tipo "Hierarchical"
@@ -205,6 +247,13 @@ public class Tower {
                     newItem.setLid(lidFromTower);
                 }
                 updateStackLogic(newItem.getHeight());
+                
+                int i = space.size() - 1;
+                while(space.get(i) != newItem.getHeight()){
+                    i -= 1;
+                }
+                newItem.setPositionInSpace(i);
+                
                 newVisual = new VisualHierarchical(newItem);
             }
             //En el caso del objeto especial Reverse
@@ -218,6 +267,13 @@ public class Tower {
                     newItem.setLid(lidFromTower);
                 }
                 updateStackLogicReverse(newItem.getHeight());
+                
+                int i = space.size() - 1;
+                while(space.get(i) != newItem.getHeight()){
+                    i -= 1;
+                }
+                newItem.setPositionInSpace(i);
+                
                 newVisual = new VisualReverse(newItem);
             }
             
@@ -252,6 +308,7 @@ public class Tower {
                         pushLidType(item.getSpecific(), item.getNumber());
                     }
                 }
+                isOk = false;
                 return;
             }
             
@@ -259,8 +316,16 @@ public class Tower {
                 if(historyLids[cupNumber - 1] == 1){
                     pushLid(cupNumber);
                 }
+                else if(historyLids[cupNumber - 1] == 2){
+                    pushLidType("Fearful", cupNumber);
+                }
+                else if(historyLids[cupNumber - 1] == 3){
+                    pushLidType("Crazy", cupNumber);
+                }
             }
         }
+        
+        isOk = true;
     }
     
     /**
@@ -271,11 +336,13 @@ public class Tower {
     public void popCup(){
         if (!hasItemsInStack("Cup")) {
             showError("No hay tazas para remover");
+            isOk = false;
             return;
         }
         
         if(stack.size() == 1 && stack.get(stack.size()-1).getSpecific().equals("Hierarchical")){
             showError("El tipo que se quiere sacar es tipo Hierarchical y esta en la ultima posicion, no se puede sacar");
+            isOk = false;
             return;
         }
 
@@ -289,10 +356,21 @@ public class Tower {
 
         restoreAbove(lidsAbove);
 
-        if(historyLids[numCup - 1] == 1){
-            removeLid(numCup);
-            historyLids[numCup - 1] = 1;
+        if(historyLids[numCup - 1] != 0){
+            int lidIdx = findItemIndex(numCup, "Lid");
+            if(lidIdx != -1){
+                int type = 1;
+                if(historyLids[numCup - 1] == 2){
+                    isOk = true;
+                    return;
+                }
+                else if(stack.get(lidIdx).getSpecific().equals("Crazy")) type = 3;
+                removeLid(numCup);
+                historyLids[numCup - 1] = type;
+            }
         }
+        
+        isOk = true;
     }
 
     /**
@@ -305,11 +383,13 @@ public class Tower {
         int index = findItemIndex(cupNumber, "Cup");
         if (index == -1){
             showError("No se encontro la taza " + cupNumber);
+            isOk = false;
             return;
         }
         
         if(index == 0 && stack.get(0).getSpecific().equals("Hierarchical")){
             showError("El tipo que se quiere sacar es tipo Hierarchical y esta en la ultima posicion, no se puede sacar");
+            isOk = false;
             return;
         }
         
@@ -321,6 +401,8 @@ public class Tower {
             removeLid(cupNumber);
             historyLids[cupNumber - 1] = 1;
         }
+        
+        isOk = true;
     }
 
     // ---------------------------------------------------------
@@ -337,42 +419,23 @@ public class Tower {
     public void pushLid(int lidNumber){
         if (lidNumber <= 0) {
             showError("El numero de tapa debe ser positivo");
+            isOk = false;
             return;
         }
         if (lidNumber > maxCups) {
             showError("La tapa " + lidNumber + " supera el ancho maximo");
+            isOk = false;
             return;
         }
         if (itemExistsInStack(lidNumber, "Lid")) {
             showError("La tapa " + lidNumber + " ya esta en la torre");
+            isOk = false;
             return;
         }
 
         history.add(new States(currentHeight, currentLevel, new ArrayList<>(space)));
         Lid newLid = new Lid(lidNumber);
         
-        // Solo auto-asociar si la taza del mismo numero esta justo
-        // en la cima actual (posicion inmediatamente anterior en el stack).
-        // Si no es adyacente, cover() se encarga de la asociacion.
-
-        
-        if (itemExistsInStack(lidNumber, "Cup")){
-            int cupIdx = findItemIndex(lidNumber, "Cup");
-            Cup modificateCup = (Cup) stack.get(cupIdx);
-            CupVisual modificateCupVisual = (CupVisual) visuals.get(cupIdx);
-            modificateCup.setLid(newLid);
-            if(cupIdx == stack.size() - 1){
-                modificateCup.coverCup();
-                modificateCupVisual.isLided();
-            }
-            // Registrar tazas que quedaron adentro
-            for (int i = cupIdx + 1; i < stack.size(); i++) {
-                if (stack.get(i).getType().equals("Cup")) {
-                    modificateCup.addCupInside(stack.get(i).getNumber());
-                }
-            }
-        }
-
         stack.add(newLid);
         updateStackLogicLid(newLid.getHeight());
 
@@ -386,6 +449,21 @@ public class Tower {
             visual.makeInvisible();
         }
         
+        // Solo auto-asociar si la taza del mismo numero esta justo
+        // en la cima actual (posicion inmediatamente anterior en el stack).
+        // Si no es adyacente, cover() se encarga de la asociacion.
+        if (itemExistsInStack(lidNumber, "Cup")){
+            int cupIdx = findItemIndex(lidNumber, "Cup");
+            Cup modificateCup = (Cup) stack.get(cupIdx);
+            CupVisual modificateCupVisual = (CupVisual) visuals.get(cupIdx);
+            modificateCup.setLid(newLid);
+            int positionInSpace = modificateCup.getPositionInSpace();
+            if(positionInSpace + 1 == currentLevel){
+                modificateCup.coverCup();
+                modificateCupVisual.isLided();
+            }
+        }
+        
         currentLevel += 1;
 
         if (currentHeight > maxHeight){
@@ -396,9 +474,12 @@ public class Tower {
             else{
                 popLid();
             }
+            isOk = false;
+            return;
         }
         
         historyLids[lidNumber - 1] = 1;
+        isOk = true;
     }
     
     /**
@@ -409,18 +490,22 @@ public class Tower {
     public void pushLidType(String type, int lidNumber){
         if(!type.equals("Normal") && !type.equals("Fearful") && !type.equals("Crazy")){
             showError("El tipo de tapa que intento ingresar no es valido");
+            isOk = false;
             return;
         }
         if (lidNumber <= 0) {
             showError("El numero de tapa debe ser positivo");
+            isOk = false;
             return;
         }
         if (lidNumber > maxCups) {
             showError("La tapa " + lidNumber + " supera el ancho maximo");
+            isOk = false;
             return;
         }
         if (itemExistsInStack(lidNumber, "Lid")) {
             showError("La tapa " + lidNumber + " ya esta en la torre");
+            isOk = false;
             return;
         }
         
@@ -444,18 +529,20 @@ public class Tower {
                 Cup modificateCup = (Cup) stack.get(cupIdx);
                 CupVisual modificateCupVisual = (CupVisual) visuals.get(cupIdx);
                 modificateCup.setLid(newItem);
-                if(cupIdx == stack.size() - 1){
-                    modificateCup.coverCup();
-                    modificateCupVisual.isLided();
-                }
-                // Registrar tazas que quedaron adentro
-                for (int i = cupIdx + 1; i < stack.size(); i++) {
-                    if (stack.get(i).getType().equals("Cup")) {
-                        modificateCup.addCupInside(stack.get(i).getNumber());
-                    }
-                }
+                int positionInSpace = modificateCup.getPositionInSpace();
+                
                 stack.add(newItem);
                 updateStackLogicLid(newItem.getHeight());
+                
+                if(positionInSpace + 1 == currentLevel){
+                    modificateCup.coverCup();
+                    modificateCupVisual.isLided();
+                    // Registrar items que quedaron adentro
+                    for(int n = cupIdx; n < stack.size(); n++){
+                        modificateCup.addItemInside(stack.get(n));
+                    }
+                }
+                historyLids[lidNumber - 1] = 2;
                 newVisual = new VisualFearful(newItem);
             }
             else if(type.equals("Crazy")){
@@ -473,11 +560,11 @@ public class Tower {
                     popCup();
                     Collections.reverse(items);
                 }
-                
                 history.add(new States(currentHeight, currentLevel, new ArrayList<>(space)));
                 Crazy newItem = new Crazy(lidNumber);
                 stack.add(newItem);
                 updateStackLogicLid(newItem.getHeight());
+                historyLids[lidNumber - 1] = 3;
                 newVisual = new VisualCrazy(newItem);
             }
             
@@ -513,23 +600,11 @@ public class Tower {
                         pushLidType(item.getSpecific(), item.getNumber());
                     }
                 }
+                isOk = false;
                 return;
             }
             
-            if(itemExistsInStack(lidNumber, "Cup")){
-                int cupIdx = findItemIndex(lidNumber, "Cup");
-                int lidIdx = findItemIndex(lidNumber, "Lid");
-                Cup modificateCup = (Cup) stack.get(cupIdx);
-                CupVisual modificateCupVisual = (CupVisual) visuals.get(cupIdx);
-                Lid lid = (Lid) stack.get(lidIdx);
-                modificateCup.setLid(lid);
-                if(cupIdx == lidIdx - 1){
-                    modificateCup.coverCup();
-                    modificateCupVisual.isLided();
-                }
-            }
-            
-            historyLids[lidNumber - 1] = 1;
+            isOk = true;
         }
     }
 
@@ -541,16 +616,23 @@ public class Tower {
     public void popLid() {
         if (!hasItemsInStack("Lid")) {
             showError("No hay tapas para remover");
+            isOk = false;
             return;
         }
-
+        
         int topLidIdx = getLastItemIndex("Lid");
         if(stack.get(topLidIdx).getSpecific().equals("Fearful")){
-            if(stack.get(topLidIdx - 1).getType().equals("Cup") && stack.get(topLidIdx - 1).getNumber() == stack.get(topLidIdx).getNumber()){
-                showError("No se puede sacar esta tapa debido a que es de tipo Fearful y esta tapando su torre");
-                return;
+            int idxCup = findItemIndex(stack.get(topLidIdx - 1).getNumber(), "Cup");
+            if(idxCup != -1){
+                Cup cup = (Cup) stack.get(idxCup);
+                boolean isLided = cup.hasLid();
+                if(isLided){
+                    showError("No se puede sacar esta tapa debido a que es de tipo Fearful y esta tapando su taza");
+                    return;
+                }
             }
         }
+        
         ArrayList<String[]> cupsAbove = collectAbove(topLidIdx);;        
 
         int lidNum = stack.get(topLidIdx).getNumber();
@@ -569,6 +651,7 @@ public class Tower {
         restoreAbove(cupsAbove);
         
         historyLids[lidNum - 1] = 0;
+        isOk = true;
     }
 
     /**
@@ -582,11 +665,13 @@ public class Tower {
         int index = findItemIndex(lidNumber, "Lid");
         if (index == -1) {
             showError("No se encontro la tapa " + lidNumber);
+            isOk = false;
             return;
         }
         ArrayList<String[]> above = collectAbove(index);
         popLid();
         restoreAbove(above);
+        isOk = true;
     }
 
     // ---------------------------------------------------------
@@ -598,23 +683,43 @@ public class Tower {
      * El menor numero siempre queda en la cima.
      * Requisito 4 - Ciclo 1.
      */
-    public void orderTower() {
+    public void orderTower(){
         if (stack.isEmpty()) return;
+        if(stack.get(0).getSpecific().equals("Hierarchical")){
+            showError("No se puede ordenar la torre debido a que se encuentra un elemento Hierarchical que no se puede quitar");
+            isOk = false;
+            return;
+        }
         ArrayList<Item> originalStack = (ArrayList<Item>) stack.clone();
-        int[] cupNums = getItemNumbers("Cup");
-        Arrays.sort(cupNums);
-        reverseArray(cupNums);
-        rebuildTowerOnlyOneItem(cupNums, "Cup");
-        if(stack.size() == 0){
-            for(Item item : originalStack){
-                if(item.getType().equals("Cup")){
-                    pushCupType(item.getSpecific(), item.getNumber());
+        ArrayList<Item> itemsToOrder = new ArrayList<>(stack);
+    
+        popAll();
+    
+        ArrayList<Item> ordered = buildOrderedList(itemsToOrder);
+    
+        for (Item item : ordered) {
+            if (item.getType().equals("Cup")) {
+                pushCupType(item.getSpecific(), item.getNumber());
+            } else if (item.getType().equals("Lid")) {
+                pushLidType(item.getSpecific(), item.getNumber());
+            }
+    
+            if (!isOk || currentHeight > maxHeight) {
+                showError("No se pudo organizar la torre");
+                popAll();
+                // Restaurar torre original
+                for (Item orig : originalStack) {
+                    if (orig.getType().equals("Cup")) {
+                        pushCupType(orig.getSpecific(), orig.getNumber());
+                    } else if (orig.getType().equals("Lid")) {
+                        pushLidType(orig.getSpecific(), orig.getNumber());
+                    }
                 }
-                else if(item.getType().equals("Lid")){
-                    pushLidType(item.getSpecific(), item.getNumber());
-                }
+                isOk = false;
+                return;
             }
         }
+        isOk = true;
     }
 
     // ---------------------------------------------------------
@@ -628,20 +733,72 @@ public class Tower {
      */
     public void reverseTower() {
         if (stack.isEmpty()) return;
+        if(stack.get(0).getSpecific().equals("Hierarchical")){
+            showError("No se puede ordenar la torre debido a que se encuentra un elemento Hierarchical que no se puede quitar");
+            isOk = false;
+            return;
+        }
+        
         ArrayList<Item> originalStack = (ArrayList<Item>) stack.clone();
-        int[] cupNums = getItemNumbers("Cup");
-        reverseArray(cupNums);
-        rebuildTowerOnlyOneItem(cupNums, "Cup");
-        if(stack.size() == 0){
-            for(Item item : originalStack){
-                if(item.getType().equals("Cup")){
-                    pushCupType(item.getSpecific(), item.getNumber());
+        ArrayList<Item> reverse = new ArrayList<>();
+        int[] copyOfLidHistory = historyLids.clone();
+        
+        for(int i = stack.size() - 1; i >= 0; i--){
+            System.out.println("numero " + stack.get(i).getType() + " " + stack.get(i).getNumber() + " " + reverse);
+            if(stack.get(i).getType().equals("Lid")){
+                int num = stack.get(i).getNumber();
+                if(!itemExistsInStack(num, "Cup")){
+                    reverse.add(stack.get(i));
                 }
-                else if(item.getType().equals("Lid")){
-                    //pushLidType(item.getSpecific(), item.getNumber());
+            }
+            else if(stack.get(i).getType().equals("Cup")){
+                reverse.add(stack.get(i));
+            }
+        }
+        
+        popAll();
+        for(int i = 0; i < copyOfLidHistory.length; i++){
+            historyLids[i] = copyOfLidHistory[i];
+        }
+        
+        for(Item i : reverse){
+            if(i.getType().equals("Cup")){
+                pushCupType(i.getSpecific(), i.getNumber());
+                if(!isOk){
+                    showError("No se ha podido revertir la torre");
+                    popAll();
+                    for(Item item : originalStack){
+                        if(i.getType().equals("Cup")){
+                            pushCupType(i.getSpecific(), i.getNumber());
+                        }
+                        else if(i.getType().equals("Lid")){
+                            pushLidType(i.getSpecific(), i.getNumber());
+                        }
+                    }
+                    isOk = false;
+                    return;
+                }
+            }
+            else if(i.getType().equals("Lid")){
+                pushLidType(i.getSpecific(), i.getNumber());
+                if(!isOk){
+                    showError("No se ha podido revertir la torre");
+                    popAll();
+                    for(Item item : originalStack){
+                        if(i.getType().equals("Cup")){
+                            pushCupType(i.getSpecific(), i.getNumber());
+                        }
+                        else if(i.getType().equals("Lid")){
+                            pushLidType(i.getSpecific(), i.getNumber());
+                        }
+                    }
+                    isOk = false;
+                    return;
                 }
             }
         }
+        
+        isOk = true;
     }
 
     // ---------------------------------------------------------
@@ -753,7 +910,7 @@ public class Tower {
      * @return true siempre que el simulador este activo
      */
     public boolean ok() {
-        return true;
+        return isOk;
     }
 
     // =========================================================
@@ -920,6 +1077,7 @@ public class Tower {
         this.grid       = new TowerGrid(maxHeight, maxWidth);
         this.visuals    = new ArrayList<>();
         this.isVisible  = true;
+        this.isOk       = true;
     }
 
     /** Actualiza el mapa de ocupacion al agregar una taza. */
@@ -1104,10 +1262,10 @@ public class Tower {
         for (int i = stack.size() - 1; i > index; i--) {
             if (stack.get(i).getType().equals("Cup")) {
                 above.add(new String[]{"Cup", stack.get(i).getSpecific(), String.valueOf(stack.get(i).getNumber())});
-                popCup();
+                absolutePopCup();
             } else {
                 above.add(new String[]{"Lid", stack.get(i).getSpecific(), String.valueOf(stack.get(i).getNumber())});
-                popLid();
+                absolutePopLid();
             }
         }
         return above;
@@ -1119,7 +1277,17 @@ public class Tower {
                 pushCupType(above.get(i)[1], Integer.parseInt(above.get(i)[2]));
             }
             else{
-                pushLidType(above.get(i)[1], Integer.parseInt(above.get(i)[2]));
+                if(above.get(i)[1].equals("Fearful")){
+                    if(!itemExistsInStack(Integer.parseInt(above.get(i)[2]), "Cup")){
+                        historyLids[Integer.parseInt(above.get(i)[2]) - 1] = 2;
+                    }
+                    else{
+                        pushLidType(above.get(i)[1], Integer.parseInt(above.get(i)[2]));
+                    }
+                }
+                else{
+                    pushLidType(above.get(i)[1], Integer.parseInt(above.get(i)[2]));
+                }
             }
         }
     }
@@ -1231,10 +1399,7 @@ public class Tower {
     }
 
     private void showError(String message) {
-        if (isVisible) {
-            JOptionPane.showMessageDialog(null, message,
-                "stackingItems", JOptionPane.ERROR_MESSAGE);
-        }
+        JOptionPane.showMessageDialog(null, message, "stackingItems", JOptionPane.ERROR_MESSAGE);
     }
 
     private void reverseArray(int[] arr) {
@@ -1243,5 +1408,86 @@ public class Tower {
             arr[i]   = arr[arr.length - 1 - i];
             arr[arr.length - 1 - i] = temp;
         }
+    }
+    
+    /**
+     * Construye recursivamente una lista ordenada de mayor a menor,
+     * priorizando tazas, respetando las tapas que cubren tazas.
+     *
+     * @param items lista de items a ordenar
+     * @return lista ordenada lista para insertar en la torre
+     */
+    private ArrayList<Item> buildOrderedList(ArrayList<Item> items) {
+        ArrayList<Item> result = new ArrayList<>();
+        ArrayList<Item> processed = new ArrayList<>();
+    
+        if (items.isEmpty()) return result;
+    
+        ArrayList<Item> cups = new ArrayList<>();
+        ArrayList<Item> orphanLids = new ArrayList<>();
+    
+        for (Item item : items) {
+            if (item.getType().equals("Cup")) {
+                cups.add(item);
+            } else if (item.getType().equals("Lid")) {
+                boolean hasCup = false;
+                for (Item other : items) {
+                    if (other.getType().equals("Cup") && other.getNumber() == item.getNumber()) {
+                        hasCup = true;
+                        break;
+                    }
+                }
+                if (!hasCup) orphanLids.add(item);
+            }
+        }
+    
+        cups.sort((a, b) -> b.getNumber() - a.getNumber());
+    
+        for (Item cup : cups) {
+            if (processed.contains(cup)) continue;
+    
+            result.add(cup);
+            processed.add(cup);
+    
+            Item associatedLid = null;
+            for (Item item : items) {
+                if (item.getType().equals("Lid") && item.getNumber() == cup.getNumber()) {
+                    associatedLid = item;
+                    break;
+                }
+            }
+    
+            if (associatedLid != null) {
+                int cupIdx = items.indexOf(cup);
+                int lidIdx = items.indexOf(associatedLid);
+    
+                if (cupIdx != -1 && lidIdx != -1 && lidIdx > cupIdx) {
+                    ArrayList<Item> insideItems = new ArrayList<>();
+                    for (int i = cupIdx + 1; i < lidIdx; i++) {
+                        insideItems.add(items.get(i));
+                    }
+    
+                    if (!insideItems.isEmpty()) {
+                        ArrayList<Item> orderedInside = buildOrderedList(insideItems);
+                        result.addAll(orderedInside);
+                        // Marcar todos los internos como procesados
+                        processed.addAll(insideItems);
+                    }
+                }
+    
+                result.add(associatedLid);
+                processed.add(associatedLid);
+            }
+        }
+    
+        orphanLids.sort((a, b) -> b.getNumber() - a.getNumber());
+        for (Item lid : orphanLids) {
+            if (!processed.contains(lid)) {
+                result.add(lid);
+                processed.add(lid);
+            }
+        }
+    
+        return result;
     }
 }

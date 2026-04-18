@@ -1,14 +1,19 @@
 #BlueJ class context
 comment0.target=TowerContest
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ TowerCOntest\ here.\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\r\n\ @version\ 1.0\ (28/02/2026)\r\n
+comment0.text=\r\n\ \=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\r\n\ CICLO\ 3\ -\ Requisitos\ 14\ al\ 15\ (solucion\ del\ simulador)\r\n\ \=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\r\n\ 14.\ Crear\ una\ clase\ especial\ la\ cual\ pueda\ imprimir\ la\ solucion\ del\ problema\r\n\ 15.\ Se\ muestra\ la\ solucion\ del\ problema\r\n\ \r\n\ Esta\ clase\ se\ encarga\ de\ realizar\ la\ simulacion\ de\ la\ solucion\ al\ problema\ del\ simulador\r\n\ \r\n\ @author\ Thomas\ Sebastian\ Garcia\ Gomez\ &\ Esteban\ Mu\u00F1oz\ Arce\r\n\ @version\ 1.0\ (28/02/2026)\r\n
 comment1.params=numberCups\ height
 comment1.target=TowerContest(int,\ int)
+comment1.text=\r\n\ El\ inicializador\ de\ TowerContest\ crea\ una\ torre\ comodin\ la\ cual\ ser\u00E1\ utilizada\ para\ simular\ la\ solucion\r\n\ @param\:\ numberCups\ es\ la\ cantidad\ de\ copas\ que\ pueden\ estar\ en\ la\ torre\r\n\ @param\:\ height\ es\ la\ altura\ maxima\ de\ la\ torre.\r\n
 comment2.params=
 comment2.target=java.util.ArrayList\ solve()
+comment2.text=\r\n\ Este\ metodo\ se\ encarga\ de\ encontrar\ la\ solucion\ al\ problema\ planteado\ en\ el\ simulador\r\n\ @return\:\ retorna\ la\ lista\ de\ las\ tazas\ que\ logran\ generar\ la\ solucion\ del\ problema\ planteado\r\n
 comment3.params=
 comment3.target=void\ simulate()
+comment3.text=\r\n\ Este\ metodo\ se\ encarga\ de\ simular\ la\ solucion\ en\ la\ torre\ comodin\ que\ se\ ha\ creado.\r\n
 comment4.params=newNumCups\ newHeight
 comment4.target=void\ changeCase(int,\ int)
+comment4.text=\r\n\ Este\ metodo\ se\ encarga\ de\ generar\ otros\ casos,\ cambiando\ la\ torre\ y\ los\ datos\ relacionados\ a\ esta\r\n\ @param\:\ newNumCups\ es\ el\ nuevo\ numero\ de\ copas\ en\ el\ caso\r\n\ @param\:\ newHeigh\ es\ la\ nueva\ altura\ maxima\ que\ tendra\ la\ nueva\ torre\ comodin\r\n
 comment5.params=
 comment5.target=void\ exit()
+comment5.text=\r\n\ Este\ metodo\ se\ encarga\ de\ cerrar\ TowerContest,\ borrando\ todos\ los\ elementos\ relacionados\r\n
 numComments=6

@@ -11,7 +11,8 @@ import java.util.*;
 public class Cup extends Item{
     private Lid lid;
     private boolean isLid;
-    private ArrayList<Integer> cupsInside;
+    private ArrayList<Item> itemsInside;
+    private int position;
     
     /**
      * Constructor de Cup
@@ -23,7 +24,7 @@ public class Cup extends Item{
         setSpecific();
         this.lid = null;
         this.isLid = false;
-        cupsInside = new ArrayList<>();
+        this.itemsInside = new ArrayList<>();
     }
     
     /**
@@ -50,20 +51,20 @@ public class Cup extends Item{
         this.lid = newLid;
     }
     
-    public void addCupInside(int number) {
-        cupsInside.add(number);
+    public void addItemInside(Item item) {
+        itemsInside.add(item);
     }
     
-    public ArrayList<Integer> getCupsInside() {
-        return cupsInside;
+    public ArrayList<Item> getItemsInside() {
+        return itemsInside;
     }
     
-    public boolean hasCupsInside() {
-        return !cupsInside.isEmpty();
+    public boolean hasItemsInside() {
+        return !itemsInside.isEmpty();
     }
     
-    public void clearCupsInside() {
-        cupsInside.clear();
+    public void clearItemsInside() {
+        itemsInside.clear();
     }
     
     /**
@@ -76,6 +77,14 @@ public class Cup extends Item{
     
     public void coverCup(){
         this.isLid = true;
+    }
+    
+    public void setPositionInSpace(int position){
+        this.position = position;
+    }
+    
+    public int getPositionInSpace(){
+        return this.position;
     }
 
     /**
