@@ -44,4 +44,11 @@ public class VisualReverse extends CupVisual{
         rightWall.makeVisible();
         isVisible = true;
     }
+    
+    @Override
+    public void isLided(){
+        isLid.changeColor("white");
+        isLid.makeVisible();
+        diference.makeVisible();
+    }
 }

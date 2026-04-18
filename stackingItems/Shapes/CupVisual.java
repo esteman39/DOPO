@@ -66,7 +66,6 @@ public class CupVisual extends Visual{
     public void isLided(){
         isLid.changeColor("white");
         isLid.makeVisible();
-        diference.makeVisible();
     }
     
     public void notLided(){

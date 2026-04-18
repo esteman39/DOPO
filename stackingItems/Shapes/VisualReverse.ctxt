@@ -6,4 +6,6 @@ comment1.target=VisualReverse(TowerGroup.Reverse)
 comment2.params=x\ y\ scale
 comment2.target=void\ draw(int,\ int,\ double)
 comment2.text=\r\n\ Dibuja\ la\ taza\ en\ la\ posicion\ especificada\r\n\ @param\ x\ posicion\ X\r\n\ @param\ y\ posicion\ Y\ (base\ de\ la\ taza)\r\n\ @param\ scale\ escala\ de\ pixeles\ por\ cm\r\n
-numComments=3
+comment3.params=
+comment3.target=void\ isLided()
+numComments=4

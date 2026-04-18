@@ -50,6 +50,13 @@ public class VisualHierarchical extends CupVisual{
     }
     
     @Override
+    public void isLided(){
+        isLid.changeColor("white");
+        isLid.makeVisible();
+        diference.makeVisible();
+    }
+    
+    @Override
     public void makeVisible() {
         if (!isVisible) {
             base.makeVisible();
